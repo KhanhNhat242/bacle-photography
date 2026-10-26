@@ -79,6 +79,7 @@ docs/REQUIREMENTS.md
 - Hiệu ứng: tái sử dụng `data-reveal`, `.reveal-zoom`, `.deco-float`, `.lightbox-fade`, `.glass-panel` trong `globals.css`. Không cài thư viện animation mới. Mọi chuyển động mới phải tắt được dưới `prefers-reduced-motion`.
 - Mobile-first. Kiểm tra 360 / 768 / 1280 / 1536px. Không cuộn ngang. Nút bấm trên mobile ≥ 44×44px. Nút nổi F10 không được che CTA hoặc nút gửi form.
 - Logo: dùng `public/images/brand/logo-bacle.png` (nền trong suốt, chữ đen), chỉ đặt trên nền sáng hoặc kính mờ. Không dùng trực tiếp `main-logo.jpg` (nền trắng).
+- Hero trang chủ chia đôi theo tỉ lệ **44% ảnh / 56% panel** từ `lg`. Header đọc trạng thái `hero | top | scrolled` (hàm `useHeaderMode` trong `Header.tsx`), và vị trí menu ở trạng thái hero được tính theo `44vw + 4rem`. Đổi tỉ lệ hoặc padding của hero thì phải sửa cả hai nơi.
 - Mọi breakpoint dùng mặc định của Tailwind. Menu ngang chỉ hiện từ `xl`. Chiều cao màn hình dùng biến thể `tall:` (≥ 820px) và `short:` (≤ 700px) khai báo trong `globals.css`.
 
 ## 5. Ảnh

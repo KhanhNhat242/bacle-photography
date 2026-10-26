@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
 
 import { ShortlistBadge } from '@/components/concept/ShortlistBadge'
 import { ButtonLink } from '@/components/ui/ButtonLink'
@@ -16,16 +16,31 @@ function isActive(pathname: string, href: string) {
   return href === '/' ? pathname === '/' : pathname.startsWith(href)
 }
 
+// 'hero': đang ở đầu trang chủ – header trong suốt, menu nằm bên phải (trên panel kem của hero)
+// 'top': đầu các trang khác · 'scrolled': đã cuộn – nền kính mờ, menu ở giữa
+type HeaderMode = 'hero' | 'top' | 'scrolled'
+
+const SCROLL_THRESHOLD = 12
+
+function subscribeScroll(onChange: () => void) {
+  window.addEventListener('scroll', onChange, { passive: true })
+  return () => window.removeEventListener('scroll', onChange)
+}
+
+function useHeaderMode(pathname: string): HeaderMode {
+  const atTopMode: HeaderMode = pathname === '/' ? 'hero' : 'top'
+  const getSnapshot = useCallback(
+    (): HeaderMode => (window.scrollY > SCROLL_THRESHOLD ? 'scrolled' : atTopMode),
+    [atTopMode],
+  )
+  return useSyncExternalStore(subscribeScroll, getSnapshot, () => atTopMode)
+}
+
 export function Header() {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  const mode = useHeaderMode(pathname)
+  const heroMode = mode === 'hero' && !menuOpen
 
   // Khoá cuộn nền và cho phép đóng bằng Esc khi menu mobile đang mở
   useEffect(() => {
@@ -53,13 +68,17 @@ export function Header() {
         Bỏ qua đến nội dung chính
       </a>
 
-      <header
-        className={cn(
-          'glass-panel fixed inset-x-0 top-0 z-50 border-b transition-shadow duration-500',
-          scrolled || menuOpen ? 'border-line shadow-lg shadow-ink/5' : 'border-transparent',
-        )}
-      >
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
+      <header className="fixed inset-x-0 top-0 z-50">
+        {/* Nền kính mờ tách thành lớp riêng để mờ dần/hiện dần khi vào – rời trạng thái hero (từ lg) */}
+        <div
+          aria-hidden="true"
+          className={cn(
+            'glass-panel absolute inset-0 -z-10 border-b transition-[opacity,box-shadow,border-color] duration-500',
+            mode === 'scrolled' || menuOpen ? 'border-line shadow-lg shadow-ink/5' : 'border-transparent',
+            heroMode && 'lg:opacity-0',
+          )}
+        />
+        <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
           <Link
             href="/"
             onClick={closeMenu}
@@ -69,9 +88,24 @@ export function Header() {
             <Image src={logo} alt={site.name} loading="eager" className="h-9 w-auto lg:h-11" sizes="180px" />
           </Link>
 
-          {/* Menu ngang từ 1280px – hẹp hơn thì 6 mục bị xuống dòng, dùng menu mobile */}
-          <nav aria-label="Điều hướng chính" className="hidden xl:block">
-            <ul className="flex items-center gap-7 xl:gap-9">
+          {/* Menu ngang từ 1280px – hẹp hơn thì 6 mục bị xuống dòng, dùng menu mobile.
+              Trạng thái hero: căn trái thẳng lề chữ panel phải của hero (44vw + padding 4rem,
+              trừ phần lề của khung max-w-7xl); khi cuộn: trượt về chính giữa. */}
+          <nav
+            aria-label="Điều hướng chính"
+            className={cn(
+              'absolute top-1/2 hidden -translate-y-1/2 transition-[left,translate] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] xl:block',
+              heroMode
+                ? 'left-[calc(44vw_+_4rem_-_max(0px,(100vw_-_80rem)/2))] translate-x-0'
+                : 'left-1/2 -translate-x-1/2',
+            )}
+          >
+            <ul
+              className={cn(
+                'flex items-center transition-[gap] duration-700',
+                heroMode ? 'gap-5 [&_a]:tracking-[0.12em]' : 'gap-9',
+              )}
+            >
               {navItems.map((item) => {
                 const active = isActive(pathname, item.href)
                 return (
@@ -101,8 +135,9 @@ export function Header() {
 
           <div className="flex items-center gap-1.5 sm:gap-3">
             <ShortlistBadge />
-            {/* bọc ngoài để ẩn trên mobile – ButtonLink luôn mang class inline-flex */}
-            <span className="hidden sm:block">
+            {/* bọc ngoài để ẩn trên mobile – ButtonLink luôn mang class inline-flex.
+                Trạng thái hero (xl) ẩn nút này: hero đã có nút "Đặt lịch chụp", nhường chỗ cho menu */}
+            <span className={cn('hidden sm:block', heroMode && 'xl:hidden')}>
               <ButtonLink href="/dat-lich" size="sm">
                 Đặt lịch chụp
               </ButtonLink>

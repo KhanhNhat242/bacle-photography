@@ -305,8 +305,13 @@ type BookingRequest = {
   - Các section xen kẽ nền `cream`/`ivory`, phân cách bằng viền trên 1px `line`.
 - **Hero:** cao đúng một màn hình (`h-svh`, giới hạn 640–1000px trên desktop).
   - Mobile/tablet: ảnh phủ toàn màn hình, chữ đặt trên lớp chuyển kem.
-  - Desktop: 2 cột, bên phải là cụm 3 ảnh (khung vòm, ảnh tròn, khung chữ nhật).
+  - Desktop (từ `lg`): bố cục chia đôi.
+    - Nửa trái (44%) là ảnh chính tràn mép trên, trái và dưới; logo nằm trên ảnh, có chữ chìm "BACLE" ở góc dưới.
+    - Nửa phải là panel kem chứa tagline, H1, mô tả và 2 nút. Đáy panel có ảnh nhỏ vắt qua mép giữa hai nửa cùng 2 điểm nhấn có icon.
   - Hero chạy hiệu ứng bằng CSS (`.hero-rise`, `.hero-zoom`, `.hero-unveil`), **không dùng `data-reveal`** để không làm chậm LCP.
+- **Header trên trang chủ** có 2 trạng thái:
+  - Khi đang ở đầu trang (chưa cuộn): nền trong suốt từ `lg`, menu ngang dịch sang phải, căn thẳng với lề chữ của panel phải; nút "Đặt lịch chụp" trên header ẩn vì hero đã có nút này.
+  - Khi cuộn xuống: header hiện nền kính mờ, menu trượt về giữa như các trang khác.
 - **Menu ngang** từ 1280px (`xl`); dưới mức đó dùng menu ☰.
 - **Chuyển động:** dùng hệ `data-reveal`, `.deco-float`, `.lightbox-fade`, `.glass-panel` đã có trong `globals.css`; tôn trọng `prefers-reduced-motion`.
 - **Responsive:** kiểm tra ở 360px, 768px, 1280px, 1536px. Không cuộn ngang.
@@ -389,3 +394,4 @@ type BookingRequest = {
 |---|---|---|
 | 26/10/2026 | Tạo tài liệu từ Phiếu Dev 44 | Dev |
 | 26/10/2026 | Hoàn thành F01 (Trang chủ 7 section) + Header, Footer, F10 nút nổi, F07 chọn concept, lightbox. Thêm token `accent-ink`, logo PNG trong suốt, `ImageAsset` dùng ảnh import tĩnh. Xử lý H1–H6, H9; thêm H10 | Dev |
+| 26/10/2026 | Đổi hero desktop sang bố cục chia đôi (ảnh trái tràn mép, panel kem phải) theo mẫu khách gửi; header trang chủ có trạng thái "hero" (menu bên phải) và trạng thái cuộn (menu về giữa) | Dev |

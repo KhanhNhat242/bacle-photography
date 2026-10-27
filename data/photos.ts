@@ -25,6 +25,27 @@ import vuQuyPetals from '@/public/images/library/844979264_122179312100985766_27
 import pinkAltarBride from '@/public/images/library/814364955_122175668090985766_6028730267571484477_n.jpg'
 import veilPortrait from '@/public/images/library/833045068_122177916458985766_6548770774937579323_n.jpg'
 import palaceWindows from '@/public/images/library/819051399_122176276718985766_35069523750258317_n.jpg'
+import palaceStaircase from '@/public/images/library/819483968_122176307210985766_7241966598668351217_n.jpg'
+import forestKiss from '@/public/images/library/800925445_122174860106985766_5335083525858304400_n.jpg'
+import forestPlayful from '@/public/images/library/805980793_122174856140985766_8912611405759166584_n.jpg'
+import aoDaiFlowerArch from '@/public/images/library/855061761_122180260544985766_6412325273328708526_n.jpg'
+import familyHug from '@/public/images/library/797648631_122176115906985766_7164044039985298308_n.jpg'
+import monochromeKiss from '@/public/images/library/543173574_122110827866985766_8753897004450364073_n.jpg'
+import studioPuppy from '@/public/images/library/825266717_122177058776985766_6386068407875164852_n.jpg'
+import dreamyVeil from '@/public/images/library/841687865_122178899636985766_4253491114991353932_n.jpg'
+import vintageCarBridesmaids from '@/public/images/library/834419199_122178048224985766_8293537214393177684_n.jpg'
+import teaCeremonyTable from '@/public/images/library/849508341_122180260670985766_1312458487052449313_n.jpg'
+import studioSeatedLaugh from '@/public/images/library/849536955_122179711898985766_539010098780033237_n.jpg'
+import aoDaiFanPortrait from '@/public/images/library/853627165_122180260736985766_308394949032287603_n.jpg'
+import studioBench from '@/public/images/library/848979224_122179711844985766_8827485687177572665_n.jpg'
+import gardenBackdrop from '@/public/images/library/828712548_122177432042985766_938532801495982004_n.jpg'
+import bridesmaidsAoDai from '@/public/images/library/820526002_122176446434985766_4821982536453442204_n.jpg'
+import palaceStairsWide from '@/public/images/library/819300760_122176278566985766_4004343990801554696_n.jpg'
+import vuQuyRedPortrait from '@/public/images/library/841031447_122179315502985766_8435978089457157532_n.jpg'
+import redAoDaiSmile from '@/public/images/library/843242288_122179310492985766_4682374475888425730_n.jpg'
+import churchVeil from '@/public/images/library/833313904_122177916572985766_8023779917759797400_n.jpg'
+import churchCelebration from '@/public/images/library/841398071_122179108592985766_4310454375037404420_n.jpg'
+import studioWhiteJacket from '@/public/images/library/825267522_122178234218985766_6282745370719680158_n.jpg'
 
 export type ImageAsset = {
   src: StaticImageData
@@ -57,4 +78,25 @@ export const photos = {
   pinkAltarBride: { src: pinkAltarBride, alt: 'Cô dâu áo dài trắng bên bàn lễ hoa hồng', position: '50% 20%' },
   veilPortrait: { src: veilPortrait, alt: 'Chân dung cô dâu đội voan ren', position: '62% 40%' },
   palaceWindows: { src: palaceWindows, alt: 'Cặp đôi trong sảnh lâu đài cổ điển với hàng cửa kính', position: '50% 60%' },
+  palaceStaircase: { src: palaceStaircase, alt: 'Cô dâu chú rể trên cầu thang lâu đài dưới đèn chùm pha lê', position: '50% 55%' },
+  forestKiss: { src: forestKiss, alt: 'Cặp đôi hôn nhau giữa khu rừng xanh ngập nắng', position: '55% 70%' },
+  forestPlayful: { src: forestPlayful, alt: 'Cô dâu chú rể vui đùa tạo dáng giữa rừng cây' },
+  aoDaiFlowerArch: { src: aoDaiFlowerArch, alt: 'Chú rể vest đen trao hoa cho cô dâu áo dài trắng bên cổng hoa', position: '50% 25%' },
+  familyHug: { src: familyHug, alt: 'Cô dâu áo dài đỏ ôm người thân trong lễ gia tiên', position: '55% 35%' },
+  monochromeKiss: { src: monochromeKiss, alt: 'Ảnh đen trắng cặp đôi hôn nhau', position: '45% 30%' },
+  studioPuppy: { src: studioPuppy, alt: 'Cô dâu ôm cún nhỏ ngồi cạnh chú rể trong studio hoa cỏ', position: '50% 50%' },
+  dreamyVeil: { src: dreamyVeil, alt: 'Cô dâu trong ánh sáng mờ ảo nhìn về phía xa', position: '50% 25%' },
+  vintageCarBridesmaids: { src: vintageCarBridesmaids, alt: 'Cô dâu và phù dâu áo dài hồng bên xe cổ trước nhà', position: '50% 60%' },
+  teaCeremonyTable: { src: teaCeremonyTable, alt: 'Cô dâu chú rể bên bàn tiệc trà ngập hoa hồng', position: '50% 45%' },
+  studioSeatedLaugh: { src: studioSeatedLaugh, alt: 'Cô dâu chú rể ngồi cười rạng rỡ trên phông trắng', position: '55% 50%' },
+  aoDaiFanPortrait: { src: aoDaiFanPortrait, alt: 'Cô dâu áo dài trắng cầm quạt tròn mỉm cười', position: '50% 25%' },
+  studioBench: { src: studioBench, alt: 'Cô dâu đứng, chú rể ngồi trên ghế đen trong studio trắng', position: '50% 55%' },
+  gardenBackdrop: { src: gardenBackdrop, alt: 'Cặp đôi đứng giữa phông vải trắng và hoa trong vườn', position: '50% 40%' },
+  bridesmaidsAoDai: { src: bridesmaidsAoDai, alt: 'Cô dâu áo dài đỏ cùng các phù dâu áo dài trắng', position: '50% 50%' },
+  palaceStairsWide: { src: palaceStairsWide, alt: 'Cặp đôi dưới chân cầu thang xoắn trong sảnh cổ điển', position: '55% 55%' },
+  vuQuyRedPortrait: { src: vuQuyRedPortrait, alt: 'Cô dâu áo dài đỏ mỉm cười bên bảng lễ vu quy', position: '45% 30%' },
+  redAoDaiSmile: { src: redAoDaiSmile, alt: 'Cô dâu áo dài đỏ tóc dài cười tươi', position: '50% 30%' },
+  churchVeil: { src: churchVeil, alt: 'Cô dâu voan ren ngồi cạnh chú rể trong nhà thờ', position: '50% 35%' },
+  churchCelebration: { src: churchCelebration, alt: 'Khách mời chúc mừng cô dâu chú rể bước ra từ nhà thờ', position: '50% 55%' },
+  studioWhiteJacket: { src: studioWhiteJacket, alt: 'Chú rể áo vest trắng cười bên cô dâu cầm hoa', position: '50% 25%' },
 } satisfies Record<string, ImageAsset>

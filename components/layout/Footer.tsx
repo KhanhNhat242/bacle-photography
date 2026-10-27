@@ -3,6 +3,8 @@ import Link from 'next/link'
 
 import { FacebookIcon, MapPinIcon, MessengerIcon, PhoneIcon, ZaloIcon } from '@/components/ui/icons'
 import { navItems, site } from '@/data/site'
+import { noOrphan } from '@/lib/format'
+import { cn } from '@/lib/style'
 import logo from '@/public/images/brand/logo-bacle.png'
 
 const linkClass =
@@ -40,31 +42,36 @@ export function Footer() {
               <li>
                 <a href={`tel:${site.phoneE164}`} className={linkClass}>
                   <PhoneIcon className="size-4 text-accent-ink" />
-                  {site.phoneDisplay}
+                  Hotline
                 </a>
               </li>
               <li>
                 <a href={site.zaloUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
                   <ZaloIcon className="size-4 text-accent-ink" />
-                  Zalo {site.phoneDisplay}
+                  Zalo
                 </a>
               </li>
               <li>
                 <a href={site.facebookUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
                   <FacebookIcon className="size-4 text-accent-ink" />
-                  facebook.com/BACLEphotography
+                  Facebook
                 </a>
               </li>
               <li>
                 <a href={site.messengerUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
                   <MessengerIcon className="size-4 text-accent-ink" />
-                  Nhắn tin Messenger
+                  Messenger
                 </a>
               </li>
               <li>
-                <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" className={linkClass}>
-                  <MapPinIcon className="size-4 text-accent-ink" />
-                  {site.address ?? `TP. ${site.city}`} · Chỉ đường
+                {/* items-start: địa chỉ dài xuống dòng thì icon vẫn thẳng dòng đầu.
+                    "· Chỉ đường" luôn đi liền một cụm – không để chữ "đường" rớt lẻ xuống dòng */}
+                <a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" className={cn(linkClass, 'items-start')}>
+                  <MapPinIcon className="mt-1 size-4 shrink-0 text-accent-ink" />
+                  <span>
+                    {noOrphan(site.address ?? `TP. ${site.city}`)}{' '}
+                    <span className="whitespace-nowrap">· Chỉ đường</span>
+                  </span>
                 </a>
               </li>
             </ul>

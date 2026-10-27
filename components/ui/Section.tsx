@@ -17,13 +17,14 @@ export function Section({ id, tone = 'cream', className, children, ...rest }: Se
     <section
       id={id}
       className={cn(
-        'border-t border-line py-16 md:py-20 lg:py-24 xl:py-28',
+        // scroll-mt = chiều cao header cố định: cuộn tới section (menu, #anchor) không bị header che
+        'scroll-mt-16 border-t border-line py-16 md:py-20 lg:scroll-mt-20 lg:py-24 xl:py-28',
         tone === 'ivory' ? 'bg-ivory' : 'bg-cream',
         className,
       )}
       {...rest}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
+      <div className=" mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
     </section>
   )
 }

@@ -3,6 +3,7 @@ import { Be_Vietnam_Pro, Cormorant_Garamond, Great_Vibes } from "next/font/googl
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Suspense } from "react";
+import { AntdProvider } from "@/components/layout/AntdProvider";
 import { photos } from "@/data/photos";
 import { site } from "@/data/site";
 
@@ -54,7 +55,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-cream font-sans text-ink">
         <Suspense fallback={null}>
-          <AntdRegistry>{children}</AntdRegistry>
+          <AntdRegistry>
+            <AntdProvider>{children}</AntdProvider>
+          </AntdRegistry>
         </Suspense>
       </body>
     </html>

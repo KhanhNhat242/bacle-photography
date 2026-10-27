@@ -1,6 +1,7 @@
 import { Section } from '@/components/ui/Section'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { processSteps } from '@/data/process'
+import { noOrphan } from '@/lib/format'
 import { revealDelay } from '@/lib/style'
 
 // Section 6 – Quy trình chụp: trục ngang (desktop) / trục dọc (mobile), số 01–05 màu champagne
@@ -30,8 +31,8 @@ export function ProcessSection() {
               {String(index + 1).padStart(2, '0')}
             </span>
             <div className="pt-2 md:pt-0">
-              <h3 className="font-serif text-[1.45rem] font-medium leading-tight text-ink md:mt-5">{step.title}</h3>
-              <p className="mt-1.5 text-[15px] leading-relaxed font-light text-muted">{step.description}</p>
+              <h3 className="font-serif text-[1.45rem] font-medium leading-tight text-ink md:mt-5">{noOrphan(step.title)}</h3>
+              <p className="mt-1.5 text-[15px] leading-relaxed font-light text-muted">{noOrphan(step.description)}</p>
             </div>
           </li>
         ))}

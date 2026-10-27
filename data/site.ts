@@ -23,13 +23,28 @@ export const site = {
 
 export const mapEmbedUrl = `https://maps.google.com/maps?q=${site.geo.lat},${site.geo.lng}&z=16&hl=vi&output=embed`
 
-export type NavItem = { href: string; label: string }
+// Id các section trên trang chủ – đích của menu (landing page một trang)
+export const sectionIds = {
+  home: 'trang-chu',
+  intro: 'gioi-thieu',
+  concepts: 'concept',
+  gallery: 'bo-suu-tap',
+  pricing: 'bang-gia',
+  contact: 'lien-he',
+} as const
 
+export type NavItem = { href: string; label: string; sectionId: string }
+
+function sectionLink(sectionId: string, label: string): NavItem {
+  return { href: `/#${sectionId}`, label, sectionId }
+}
+
+// Thứ tự theo đúng thứ tự section trên trang để mục active chạy tuần tự khi cuộn
 export const navItems: NavItem[] = [
-  { href: '/', label: 'Trang chủ' },
-  { href: '/gioi-thieu', label: 'Giới thiệu' },
-  { href: '/concept', label: 'Concept' },
-  { href: '/bang-gia', label: 'Bảng giá' },
-  { href: '/bo-suu-tap', label: 'Bộ sưu tập' },
-  { href: '/lien-he', label: 'Liên hệ' },
+  sectionLink(sectionIds.home, 'Trang chủ'),
+  sectionLink(sectionIds.intro, 'Giới thiệu'),
+  sectionLink(sectionIds.concepts, 'Concept'),
+  sectionLink(sectionIds.gallery, 'Bộ sưu tập'),
+  sectionLink(sectionIds.pricing, 'Bảng giá'),
+  sectionLink(sectionIds.contact, 'Liên hệ'),
 ]

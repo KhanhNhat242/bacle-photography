@@ -4,7 +4,7 @@ import { ButtonLink } from '@/components/ui/ButtonLink'
 import { CameraIcon, SparkleIcon } from '@/components/ui/icons'
 import { Sprig } from '@/components/ui/Sprig'
 import { photos } from '@/data/photos'
-import { site } from '@/data/site'
+import { sectionIds, site } from '@/data/site'
 import { heroDelay } from '@/lib/style'
 
 const main = photos.sunlitLaugh
@@ -31,6 +31,7 @@ const highlights = [
 export function HeroSection() {
   return (
     <section
+      id={sectionIds.home}
       aria-labelledby="hero-title"
       className="relative isolate overflow-hidden bg-cream [--hero-thumb:clamp(8rem,21vh,11rem)] lg:h-svh lg:max-h-[1000px] lg:min-h-[660px]"
     >
@@ -83,31 +84,12 @@ export function HeroSection() {
             Lưu giữ trọn vẹn khoảnh khắc ngày <em className="font-normal text-accent-ink">chung đôi</em>
           </h1>
           <p
-            className="hero-rise mt-5 max-w-md text-[15px] leading-relaxed font-light text-pretty text-ink/80 sm:text-base lg:mt-6 lg:text-lg lg:text-muted"
+            className="hero-rise mt-5 max-w-md text-[15px] leading-relaxed font-light text-pretty text-ink/80 sm:text-base lg:mt-6 lg:pb-15 lg:text-lg lg:text-muted"
             style={heroDelay(420)}
           >
             Ghi lại câu chuyện tình yêu của hai bạn bằng những khung hình tự nhiên và tinh tế nhất.
           </p>
-          {/* Mobile: chừa 4rem bên phải cho cụm nút nổi Zalo/Messenger/Gọi (F10) */}
-          <div className="hero-rise mt-7 flex flex-col gap-3 pr-16 sm:flex-row sm:pr-0 lg:mt-9" style={heroDelay(560)}>
-            <ButtonLink href="/dat-lich">Đặt lịch chụp</ButtonLink>
-            <ButtonLink href="/concept" variant="outline" className="bg-cream/60 lg:bg-transparent">
-              Xem concept
-            </ButtonLink>
-          </div>
         </div>
-
-        {/* Đáy panel: 2 điểm nhấn, chừa chỗ bên trái cho ảnh nhỏ vắt qua mép và bên phải cho cụm nút nổi.
-            Ở lg (panel hẹp) chỉ giữ khoảng trống cho ảnh nhỏ, điểm nhấn hiện từ xl. */}
-        <ul className="hidden min-h-[calc(var(--hero-thumb)*1.25)] gap-10 pb-10 lg:flex xl:grid xl:grid-cols-[repeat(2,minmax(0,15rem))] xl:content-end xl:items-start xl:pl-[calc(var(--hero-thumb)/2_-_1.5rem)] xl:pr-16">
-          {highlights.map((item, index) => (
-            <li key={item.title} className="hero-rise hidden max-w-[15rem] xl:block" style={heroDelay(900 + index * 150)}>
-              <item.icon className="size-7 text-accent-ink" />
-              <p className="mt-3 font-serif text-[1.35rem] font-medium leading-tight text-ink">{item.title}</p>
-              <p className="mt-1.5 text-[14px] leading-relaxed font-light text-muted">{item.description}</p>
-            </li>
-          ))}
-        </ul>
       </div>
 
       {/* Ảnh nhỏ vắt qua mép giữa ảnh chính và panel */}

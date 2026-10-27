@@ -3,17 +3,63 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useCallback, useEffect, useState, useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useState, useSyncExternalStore, type MouseEvent } from 'react'
 
 import { ShortlistBadge } from '@/components/concept/ShortlistBadge'
 import { ButtonLink } from '@/components/ui/ButtonLink'
 import { CloseIcon, MenuIcon, PhoneIcon } from '@/components/ui/icons'
-import { navItems, site } from '@/data/site'
+import { navItems, sectionIds, site } from '@/data/site'
+import { lockScroll } from '@/lib/scrollLock'
 import { cn, heroDelay } from '@/lib/style'
 import logo from '@/public/images/brand/logo-bacle.png'
 
-function isActive(pathname: string, href: string) {
-  return href === '/' ? pathname === '/' : pathname.startsWith(href)
+// Vạch theo dõi ở 35% chiều cao màn hình: section nào có mép trên đã vượt qua vạch thì mục menu của nó active
+const SPY_LINE = 0.35
+
+function subscribeViewport(onChange: () => void) {
+  window.addEventListener('scroll', onChange, { passive: true })
+  window.addEventListener('resize', onChange)
+  return () => {
+    window.removeEventListener('scroll', onChange)
+    window.removeEventListener('resize', onChange)
+  }
+}
+
+function getActiveSection(): string | null {
+  const sections = navItems
+    .map((item) => document.getElementById(item.sectionId))
+    .filter((element): element is HTMLElement => element !== null)
+  if (sections.length === 0) return null
+
+  // Chạm đáy trang: section cuối có thể không bao giờ vượt vạch, nên active luôn mục cuối
+  const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2
+  if (atBottom) return sections[sections.length - 1].id
+
+  const line = window.innerHeight * SPY_LINE
+  let active = sections[0].id
+  for (const section of sections) {
+    if (section.getBoundingClientRect().top <= line) active = section.id
+  }
+  return active
+}
+
+// Section đang xem trên trang chủ; trang khác (không có section) → null, không mục nào active
+function useActiveSection() {
+  return useSyncExternalStore(subscribeViewport, getActiveSection, () => null)
+}
+
+// Landing page một trang: bấm mục menu thì cuộn mượt tới section.
+// Trang không có section đó (vd. 404) → để Link về trang chủ đúng #section như link bình thường.
+function scrollToSection(event: MouseEvent<HTMLAnchorElement>, sectionId: string) {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return
+  const target = document.getElementById(sectionId)
+  if (!target) return
+
+  event.preventDefault()
+  const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+  if (sectionId === sectionIds.home) window.scrollTo({ top: 0, behavior })
+  else target.scrollIntoView({ behavior, block: 'start' })
+  window.history.replaceState(null, '', sectionId === sectionIds.home ? '/' : `#${sectionId}`)
 }
 
 // 'hero': đang ở đầu trang chủ – header trong suốt, menu nằm bên phải (trên panel kem của hero)
@@ -41,23 +87,29 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const mode = useHeaderMode(pathname)
   const heroMode = mode === 'hero' && !menuOpen
+  const activeSection = useActiveSection()
 
   // Khoá cuộn nền và cho phép đóng bằng Esc khi menu mobile đang mở
   useEffect(() => {
     if (!menuOpen) return
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    const unlockScroll = lockScroll()
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setMenuOpen(false)
     }
     window.addEventListener('keydown', onKeyDown)
     return () => {
-      document.body.style.overflow = previousOverflow
+      unlockScroll()
       window.removeEventListener('keydown', onKeyDown)
     }
   }, [menuOpen])
 
   const closeMenu = () => setMenuOpen(false)
+
+  // Đóng menu mobile (nếu đang mở) rồi cuộn tới section
+  const goToSection = (event: MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    closeMenu()
+    scrollToSection(event, sectionId)
+  }
 
   return (
     <>
@@ -81,7 +133,7 @@ export function Header() {
         <div className="relative mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
           <Link
             href="/"
-            onClick={closeMenu}
+            onClick={(event) => goToSection(event, sectionIds.home)}
             aria-label={`${site.name} – Trang chủ`}
             className="shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-ink"
           >
@@ -107,12 +159,13 @@ export function Header() {
               )}
             >
               {navItems.map((item) => {
-                const active = isActive(pathname, item.href)
+                const active = activeSection === item.sectionId
                 return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
-                      aria-current={active ? 'page' : undefined}
+                      onClick={(event) => goToSection(event, item.sectionId)}
+                      aria-current={active ? 'location' : undefined}
                       className={cn(
                         'group relative whitespace-nowrap py-2 text-[12px] font-medium uppercase tracking-[0.18em] transition-colors',
                         active ? 'text-ink' : 'text-muted hover:text-ink',
@@ -134,11 +187,15 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-1.5 sm:gap-3">
-            <ShortlistBadge />
+            {/* <ShortlistBadge /> */}
             {/* bọc ngoài để ẩn trên mobile – ButtonLink luôn mang class inline-flex.
                 Trạng thái hero (xl) ẩn nút này: hero đã có nút "Đặt lịch chụp", nhường chỗ cho menu */}
             <span className={cn('hidden sm:block', heroMode && 'xl:hidden')}>
-              <ButtonLink href="/dat-lich" size="sm">
+              <ButtonLink
+                href={`/#${sectionIds.contact}`}
+                size="sm"
+                onClick={(event) => goToSection(event, sectionIds.contact)}
+              >
                 Đặt lịch chụp
               </ButtonLink>
             </span>
@@ -159,18 +216,19 @@ export function Header() {
       {menuOpen ? (
         <div
           id="menu-mobile"
-          className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-cream lg:top-20 xl:hidden"
+          // overscroll-contain: vuốt tới mép menu không kéo trang phía sau cuộn theo
+          className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto overscroll-contain bg-cream lg:top-20 xl:hidden"
         >
           <nav aria-label="Menu" className="px-4 pb-10 pt-6 sm:px-6">
             <ul className="divide-y divide-line border-y border-line">
               {navItems.map((item, index) => {
-                const active = isActive(pathname, item.href)
+                const active = activeSection === item.sectionId
                 return (
                   <li key={item.href} className="hero-rise" style={heroDelay(index * 50)}>
                     <Link
                       href={item.href}
-                      onClick={closeMenu}
-                      aria-current={active ? 'page' : undefined}
+                      onClick={(event) => goToSection(event, item.sectionId)}
+                      aria-current={active ? 'location' : undefined}
                       className={cn(
                         'flex items-center justify-between py-4 font-serif text-[1.7rem] leading-none',
                         active ? 'text-accent-ink' : 'text-ink',
@@ -186,7 +244,11 @@ export function Header() {
               })}
             </ul>
             <div className="mt-8 grid gap-3">
-              <ButtonLink href="/dat-lich" className="w-full">
+              <ButtonLink
+                href={`/#${sectionIds.contact}`}
+                className="w-full"
+                onClick={(event) => goToSection(event, sectionIds.contact)}
+              >
                 Đặt lịch chụp
               </ButtonLink>
               <ButtonLink href={`tel:${site.phoneE164}`} variant="outline" className="w-full">

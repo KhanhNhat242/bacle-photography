@@ -1,8 +1,9 @@
-import { ButtonLink } from '@/components/ui/ButtonLink'
 import { CheckIcon } from '@/components/ui/icons'
 import type { Package } from '@/data/packages'
-import { formatPrice } from '@/lib/format'
+import { formatPrice, noOrphan } from '@/lib/format'
 import { cn, revealDelay } from '@/lib/style'
+
+import { BookPackageButton } from './BookPackageButton'
 
 type PackageCardProps = { pkg: Package; index?: number }
 
@@ -22,7 +23,7 @@ export function PackageCard({ pkg, index = 0 }: PackageCardProps) {
         </span>
       ) : null}
 
-      <h3 className="font-serif text-[1.75rem] font-medium leading-tight text-ink">{pkg.name}</h3>
+      <h3 className="font-serif text-[1.75rem] font-medium leading-tight text-ink">{noOrphan(pkg.name)}</h3>
       <p className="mt-2 text-[11px] font-medium uppercase tracking-[0.24em] text-accent-ink">
         {pkg.price !== null ? 'Giá tham khảo' : 'Liên hệ báo giá'}
       </p>
@@ -43,18 +44,18 @@ export function PackageCard({ pkg, index = 0 }: PackageCardProps) {
         {pkg.includes.map((item) => (
           <li key={item} className="flex gap-3 text-[15px] leading-snug font-light text-muted">
             <CheckIcon className="mt-0.5 size-4 shrink-0 text-accent-ink" />
-            {item}
+            {noOrphan(item)}
           </li>
         ))}
       </ul>
 
-      <ButtonLink
-        href={`/dat-lich?package=${pkg.id}`}
+      <BookPackageButton
+        packageId={pkg.id}
         variant={pkg.highlighted ? 'primary' : 'outline'}
         className="mt-9 w-full"
       >
         Đặt lịch gói này
-      </ButtonLink>
+      </BookPackageButton>
     </article>
   )
 }

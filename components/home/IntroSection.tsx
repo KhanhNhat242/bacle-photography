@@ -6,7 +6,7 @@ import { Section } from '@/components/ui/Section'
 import { Eyebrow } from '@/components/ui/SectionHeading'
 import { Sprig } from '@/components/ui/Sprig'
 import { photos } from '@/data/photos'
-import { site } from '@/data/site'
+import { sectionIds, site } from '@/data/site'
 import { revealDelay } from '@/lib/style'
 
 const portrait = photos.studioForeheadKiss
@@ -15,7 +15,7 @@ const ring = photos.ringExchange
 // Section 2 – Giới thiệu ngắn: 2 cột bất đối xứng, ảnh đặt lệch tầng bên trái, chữ bên phải
 export function IntroSection() {
   return (
-    <Section tone="ivory" aria-labelledby="intro-title">
+    <Section id={sectionIds.intro} tone="ivory" aria-labelledby="intro-title">
       <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
         <div className="relative mx-auto w-full max-w-md pb-14 pr-10 sm:max-w-lg sm:pb-16 sm:pr-16 lg:col-span-6 lg:max-w-none lg:pb-20 lg:pr-24">
           {/* Khung viền mảnh lệch nhẹ phía sau ảnh chính */}
@@ -79,15 +79,6 @@ export function IntroSection() {
           <p data-reveal="up" style={revealDelay(280)} className="mt-6 font-script text-[2.1rem] text-accent-ink">
             {site.tagline}
           </p>
-          <div data-reveal="up" style={revealDelay(340)} className="mt-6">
-            <Link
-              href="/gioi-thieu"
-              className="group inline-flex items-center gap-3 border-b border-accent pb-1.5 text-[12px] font-medium uppercase tracking-[0.18em] text-ink transition-colors hover:text-accent-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-ink"
-            >
-              Về BACLE
-              <ArrowRightIcon className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Link>
-          </div>
         </div>
       </div>
     </Section>

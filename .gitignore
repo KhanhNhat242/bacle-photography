@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# dữ liệu yêu cầu đặt lịch bản demo (giả định A7)
+/.data/

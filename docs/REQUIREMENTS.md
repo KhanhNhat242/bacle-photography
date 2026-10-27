@@ -110,11 +110,24 @@ Ngoài ra (hạ tầng, không phải chức năng riêng): Header/menu, Footer,
 Các khối theo thứ tự:
 1. **Hero:** ảnh cưới toàn màn hình (hoặc slideshow nhẹ), logo, tagline, 2 nút: "Đặt lịch chụp" → `/dat-lich`, "Xem concept" → `/concept`.
 2. **Giới thiệu ngắn:** 2–3 câu + link "Về BACLE" → `/gioi-thieu`.
-3. **Concept nổi bật:** 3–6 concept có `featured: true` (thẻ concept dùng chung với F03) + link "Xem tất cả".
+3. **Concept nổi bật:** 3–6 concept có `featured: true`, hiển thị dạng **coverflow** + link "Xem tất cả".
+   - Bố cục: thẻ chính lớn ở giữa, các thẻ phụ nhỏ dần về hai bên, xoay vòng.
+   - Ảnh concept phủ kín thẻ làm nền, chữ đặt đè lên ảnh.
+   - Chuyển thẻ: **bấm** vào thẻ phụ thì cả dải trượt ngang (chậm, ~1,1 giây) đưa thẻ đó vào giữa. Vuốt, phím ←/→ và nút mũi tên cũng chuyển được. Hover chỉ làm sáng nhẹ thẻ phụ, không chuyển thẻ.
+   - Thẻ phụ nghiêng nhẹ theo phối cảnh 3D (xoay quanh trục dọc, mặt hướng vào thẻ giữa), thẻ càng xa nghiêng càng nhiều.
+   - Chỉ thẻ ở giữa mới hiện mô tả, link "Xem chi tiết" và nút "Chọn concept" (F07).
 4. **Bảng giá tóm tắt:** các gói (rút gọn từ F05) + link "Xem chi tiết bảng giá".
-5. **Bộ sưu tập xem trước:** lưới 6–9 ảnh + link `/bo-suu-tap`.
+5. **Bộ sưu tập xem trước:** bộ 30 ảnh khai báo trong `data/gallery.ts`.
+   - Desktop: lưới **5 cột đối xứng**, chân các cột thẳng hàng, đỉnh các cột hạ dần vào giữa.
+     - Hai cột ngoài: ảnh dọc ở trên, ảnh ngang thấp ở dưới.
+     - Hai cột kế: một ảnh dọc cao.
+     - Cột giữa: một ảnh thấp, có hoạ tiết nhỏ phía trên, và nút **"Xem thêm"** dạng viên thuốc nền đen ngay dưới ảnh.
+   - Lưới hiện 7 ảnh. Mobile: 2 cột ô vuông với 6 ảnh, nút "Xem thêm" nằm cuối lưới, căn giữa.
+   - Bấm "Xem thêm" mở lightbox toàn màn hình xem ảnh cỡ lớn, bắt đầu từ ảnh đầu tiên chưa hiện trên lưới (ảnh 8/30); ←/→, vuốt hoặc nút mũi tên để xem tiếp. Bấm ảnh trên lưới cũng mở lightbox tại ảnh đó (xem đủ 30 ảnh).
+   - 23 ảnh trong phần "Xem thêm" được bốc ngẫu nhiên một lần (seed cố định) từ thư viện, đã loại ảnh review/collage.
 6. **Quy trình chụp** (tuỳ chọn): Tư vấn → Chọn concept → Chụp → Hậu kỳ → Nhận ảnh.
-7. **CTA cuối trang:** kêu gọi đặt lịch + SĐT/Zalo.
+7. **CTA cuối trang:** kêu gọi đặt lịch + SĐT/Zalo + **form đặt lịch nhúng** (cùng component, quy tắc kiểm tra và Server Action với F08 — `components/booking/BookingForm.tsx`) + bản đồ nhỏ.
+   - Desktop: cột trái là lời mời, nút gọi/Zalo, địa chỉ và bản đồ; cột phải là form trên thẻ nền kem. Mobile: lời mời → form → bản đồ.
 
 ### F02 — Giới thiệu `/gioi-thieu`
 - Câu chuyện thương hiệu, phong cách chụp, đội ngũ (nếu có), lý do chọn BACLE (USP — **đang thiếu**, xem Q3).
@@ -135,7 +148,9 @@ Các khối theo thứ tự:
 ### F05 — Bảng giá theo gói `/bang-gia`
 - Thẻ gói: tên, giá (hoặc "Liên hệ" nếu chưa có giá), danh sách hạng mục bao gồm, gói nổi bật được làm nổi.
 - Ghi chú chung (phát sinh, đặt cọc…) — nội dung chờ khách.
-- Mỗi gói có nút "Đặt lịch gói này" → `/dat-lich?package=<id>`.
+- Mỗi gói có nút "Đặt lịch gói này".
+  - Trang có form đặt lịch (trang chủ): cuộn mượt xuống form ở CTA cuối trang và chọn sẵn gói đó trong ô "Gói dịch vụ".
+  - Trang không có form: dẫn tới `/dat-lich?package=<id>`.
 - Giá chưa được khách xác nhận phải hiển thị nhãn "Giá tham khảo".
 
 ### F06 — Bộ sưu tập ảnh `/bo-suu-tap`
@@ -148,7 +163,7 @@ Hiểu theo phiếu: khách **đánh dấu (shortlist) một hoặc nhiều conc
 - Nút "Chọn concept" trên thẻ (F03) và trang chi tiết (F04); bấm lại để bỏ chọn.
 - Hiển thị số concept đã chọn (badge trên header hoặc thanh nổi) + nút "Đặt lịch với concept đã chọn".
 - Lưu tạm ở phía trình duyệt (`localStorage`, bọc `try/catch`; mất dữ liệu vẫn hoạt động bình thường).
-- Trong F08 có ô chọn concept (multi-select) — đây là nơi chốt cuối cùng; dữ liệu shortlist chỉ dùng để điền sẵn.
+- Trong F08 có ô chọn **một** concept — đây là nơi chốt cuối cùng; shortlist chỉ dùng để điền sẵn (lấy concept đầu tiên trong danh sách đã chọn).
 - Giới hạn tối đa: 3 concept/yêu cầu (giả định A4, chờ khách xác nhận).
 
 ### F08 — Đặt lịch chụp `/dat-lich`
@@ -159,12 +174,11 @@ Form gửi yêu cầu (không phải đặt chỗ tức thì — studio sẽ li�
 | Họ tên người liên hệ | ✔ | 2–80 ký tự |
 | Số điện thoại / Zalo | ✔ | SĐT Việt Nam: `0` + 9 số hoặc `+84` + 9 số (cho phép dấu cách/chấm) |
 | Email | | Định dạng email |
-| Concept muốn chụp | ✔ | 1–3 concept, phải tồn tại trong dữ liệu; điền sẵn từ `?concept=` hoặc shortlist F07 |
+| Concept muốn chụp | ✔ | Chọn đúng 1 concept, phải tồn tại trong dữ liệu; điền sẵn từ `?concept=` hoặc shortlist F07 |
 | Gói dịch vụ | | Phải tồn tại; điền sẵn từ `?package=` |
 | Ngày chụp mong muốn | ✔ | Không trước ngày hiện tại |
 | Buổi chụp | | Sáng / Chiều / Cả ngày |
 | Ngày cưới dự kiến | | |
-| Kênh liên hệ ưu tiên | | Gọi điện / Zalo / Messenger |
 | Ghi chú | | ≤ 1000 ký tự |
 
 - Kiểm tra **cả phía client (antd Form) lẫn phía server (Server Action)**. Server là nơi quyết định.
@@ -261,12 +275,11 @@ type BookingRequest = {
   fullName: string
   phone: string                    // chuẩn hoá về +84…
   email?: string
-  conceptSlugs: string[]           // 1–3
+  conceptSlug: string              // đúng 1 concept
   packageId?: string
   preferredDate: string            // YYYY-MM-DD
   timeSlot?: 'sang' | 'chieu' | 'ca_ngay'
   weddingDate?: string
-  contactChannel?: 'goi' | 'zalo' | 'messenger'
   note?: string
   status: BookingStatus
   adminNote?: string
@@ -313,6 +326,11 @@ type BookingRequest = {
   - Khi đang ở đầu trang (chưa cuộn): nền trong suốt từ `lg`, menu ngang dịch sang phải, căn thẳng với lề chữ của panel phải; nút "Đặt lịch chụp" trên header ẩn vì hero đã có nút này.
   - Khi cuộn xuống: header hiện nền kính mờ, menu trượt về giữa như các trang khác.
 - **Menu ngang** từ 1280px (`xl`); dưới mức đó dùng menu ☰.
+- **Menu là điều hướng trong một trang** (bản demo là landing page một trang).
+  - Mỗi mục trỏ tới một section của trang chủ: `/#trang-chu`, `/#gioi-thieu`, `/#concept`, `/#bo-suu-tap`, `/#bang-gia`, `/#lien-he`. Id khai báo một lần trong `data/site.ts` (`sectionIds`).
+  - Thứ tự mục menu theo đúng thứ tự section trên trang.
+  - Bấm mục menu: cuộn mượt tới section, chừa chiều cao header cố định. Dưới `prefers-reduced-motion` thì nhảy thẳng tới section. Từ trang khác thì về trang chủ đúng section đó.
+  - Khi cuộn, mục ứng với section đang xem tự được active (gạch chân champagne, `aria-current`).
 - **Chuyển động:** dùng hệ `data-reveal`, `.deco-float`, `.lightbox-fade`, `.glass-panel` đã có trong `globals.css`; tôn trọng `prefers-reduced-motion`.
 - **Responsive:** kiểm tra ở 360px, 768px, 1280px, 1536px. Không cuộn ngang.
 
@@ -351,11 +369,12 @@ type BookingRequest = {
 | Mã | Giả định |
 |---|---|
 | A1 | Ngôn ngữ: chỉ tiếng Việt |
-| A2 | Dịch vụ: chụp ảnh cưới (pre-wedding ngoại cảnh, studio, lễ phục/áo dài); concept & gói giá là **nội dung mẫu** (`isDemo: true`): 3 concept (Ngoại cảnh Nắng Sớm, Studio Thanh Lịch, Lễ Gia Tiên & Áo Dài Đỏ) và 3 gói (Studio Tinh Gọn 5,9tr · Ngoại Cảnh & Studio 12,9tr · Phóng Sự Lễ Gia Tiên 6,9tr), hiển thị nhãn "Giá tham khảo" |
+| A2 | Dịch vụ: chụp ảnh cưới (pre-wedding ngoại cảnh, studio, lễ phục/áo dài); concept & gói giá là **nội dung mẫu** (`isDemo: true`): 5 concept (Vườn Xanh Lãng Mạn, Studio Thanh Lịch, Ngoại cảnh Nắng Sớm, Lễ Gia Tiên & Áo Dài Đỏ, Lâu Đài Cổ Điển) và 3 gói (Studio Tinh Gọn 5,9tr · Ngoại Cảnh & Studio 12,9tr · Phóng Sự Lễ Gia Tiên 6,9tr), hiển thị nhãn "Giá tham khảo" |
 | A3 | Đặt lịch = gửi yêu cầu, studio gọi lại xác nhận; không đặt cọc online |
-| A4 | Tối đa 3 concept cho một yêu cầu đặt lịch |
+| A4 | Shortlist F07 giữ tối đa 3 concept; mỗi yêu cầu đặt lịch (F08) chỉ chọn 1 concept |
 | A5 | Tagline "All you need is love" lấy từ watermark ảnh |
 | A6 | Chỉ có 1 tài khoản quản trị |
+| A7 | Trong lúc chờ Q7, yêu cầu đặt lịch lưu vào file JSON qua `lib/bookings/repository.ts`. Máy dev ghi `.data/bookings.json` (đã gitignore). Trên Vercel chỉ ghi được vào thư mục tạm nên **dữ liệu không bền** (mất khi instance khởi động lại), chỉ dùng cho demo |
 
 ## 10. Câu hỏi mở (cần sale hỏi khách)
 
@@ -395,3 +414,11 @@ type BookingRequest = {
 | 26/10/2026 | Tạo tài liệu từ Phiếu Dev 44 | Dev |
 | 26/10/2026 | Hoàn thành F01 (Trang chủ 7 section) + Header, Footer, F10 nút nổi, F07 chọn concept, lightbox. Thêm token `accent-ink`, logo PNG trong suốt, `ImageAsset` dùng ảnh import tĩnh. Xử lý H1–H6, H9; thêm H10 | Dev |
 | 26/10/2026 | Đổi hero desktop sang bố cục chia đôi (ảnh trái tràn mép, panel kem phải) theo mẫu khách gửi; header trang chủ có trạng thái "hero" (menu bên phải) và trạng thái cuộn (menu về giữa) | Dev |
+| 27/10/2026 | Concept nổi bật đổi sang coverflow theo mẫu khách gửi (hover thẻ phụ để đưa vào giữa, ảnh làm nền, chữ đè lên ảnh). Thêm 2 concept mẫu: Vườn Xanh Lãng Mạn, Lâu Đài Cổ Điển | Dev |
+| 27/10/2026 | Coverflow: chuyển thẻ bằng click thay cho hover, trượt chậm hơn (700ms → 1100ms), thẻ phụ nghiêng 3D theo mẫu | Dev |
+| 27/10/2026 | Bộ sưu tập trang chủ mở rộng lên 30 ảnh (`data/gallery.ts`, thêm 18 ảnh vào `data/photos.ts`); thêm nút "Xem thêm" ở góc dưới bên phải lưới, mở popup các ảnh tiếp theo | Dev |
+| 27/10/2026 | Lưới bộ sưu tập đổi sang bố cục 5 cột đối xứng theo mẫu khách gửi; nút "Xem thêm" thành viên thuốc đen dưới ảnh cột giữa | Dev |
+| 27/10/2026 | Nút "Xem thêm" mở thẳng lightbox ảnh cỡ lớn (từ ảnh 8/30) thay cho popup lưới ảnh nhỏ; bỏ `GalleryModal` | Dev |
+| 27/10/2026 | F01.7 nhúng form đặt lịch (F08) vào CTA cuối trang. Dựng `lib/bookings/` (kiểu, quy tắc kiểm tra dùng chung, Server Action, repository file JSON – giả định A7). Thêm `ConfigProvider` antd khớp token màu và dependency `dayjs` (antd DatePicker dùng dayjs, cần locale tiếng Việt) | Dev |
+| 27/10/2026 | F08: bỏ trường "Kênh liên hệ ưu tiên"; concept chỉ chọn 1 (`conceptSlug`). F05: nút "Đặt lịch gói này" trên trang chủ cuộn xuống form CTA và chọn sẵn gói | Dev |
+| 27/10/2026 | Menu header/footer chuyển sang điều hướng trong một trang: anchor tới section trang chủ, cuộn mượt, tự active theo section đang xem. Các route riêng F02–F09 không còn nằm trong menu | Dev |

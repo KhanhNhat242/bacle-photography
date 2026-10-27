@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { noOrphan } from '@/lib/format'
 import { cn, revealDelay } from '@/lib/style'
 
 type SectionHeadingProps = {
@@ -51,7 +52,7 @@ export function SectionHeading({
         style={revealDelay(100)}
         className="mt-4 font-serif text-[2.15rem] font-medium leading-[1.12] text-balance text-ink sm:text-[2.6rem] lg:text-[3.1rem]"
       >
-        {title}
+        {typeof title === 'string' ? noOrphan(title) : title}
       </h2>
       {description ? (
         <p
@@ -59,7 +60,7 @@ export function SectionHeading({
           style={revealDelay(200)}
           className="mt-4 text-[15px] leading-relaxed font-light text-pretty text-muted lg:text-base"
         >
-          {description}
+          {typeof description === 'string' ? noOrphan(description) : description}
         </p>
       ) : null}
     </div>

@@ -5,6 +5,7 @@ import { useEffect, useRef, type KeyboardEvent, type PointerEvent } from 'react'
 
 import { ChevronLeftIcon, ChevronRightIcon, CloseIcon } from '@/components/ui/icons'
 import type { ImageAsset } from '@/data/photos'
+import { lockScroll } from '@/lib/scrollLock'
 
 type LightboxProps = {
   images: ImageAsset[]
@@ -31,11 +32,10 @@ export function Lightbox({ images, index, onClose, onNavigate }: LightboxProps) 
   // Khoá cuộn nền, đưa focus vào hộp thoại, trả focus về ảnh đã bấm khi đóng
   useEffect(() => {
     const trigger = document.activeElement as HTMLElement | null
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    const unlockScroll = lockScroll()
     closeRef.current?.focus()
     return () => {
-      document.body.style.overflow = previousOverflow
+      unlockScroll()
       trigger?.focus()
     }
   }, [])
@@ -78,8 +78,10 @@ export function Lightbox({ images, index, onClose, onNavigate }: LightboxProps) 
       role="dialog"
       aria-modal="true"
       aria-label="Xem ảnh phóng to"
+      // tabIndex -1: bấm vào ảnh/khoảng trống thì focus vẫn ở trong hộp thoại, phím ←/→/Esc vẫn chạy
+      tabIndex={-1}
       onKeyDown={onKeyDown}
-      className="fixed inset-0 z-[60] flex flex-col bg-ink/95"
+      className="fixed inset-0 z-[60] flex flex-col bg-ink/95 outline-none"
     >
       <div className="flex items-center justify-between px-4 py-4 text-cream sm:px-6">
         <p className="text-[13px] tracking-[0.2em]" aria-live="polite">

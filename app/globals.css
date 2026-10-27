@@ -43,6 +43,27 @@ body {
   font-variant-numeric: lining-nums;
 }
 
+/* Tránh một chữ rớt lẻ xuống dòng cuối (vd. "Vườn Xanh Lãng / Mạn") trên mọi màn hình:
+   tiêu đề chia đều chữ giữa các dòng, đoạn văn ưu tiên dòng cuối có ít nhất 2 chữ.
+   Đặt trong layer base để class tiện ích (text-wrap, text-nowrap…) vẫn ghi đè được. */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  blockquote,
+  figcaption {
+    text-wrap: pretty;
+  }
+}
+
 ::selection {
   background: color-mix(in srgb, var(--accent) 35%, transparent);
 }

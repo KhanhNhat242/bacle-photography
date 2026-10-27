@@ -3,6 +3,7 @@ import Link from 'next/link'
 
 import { ArrowRightIcon } from '@/components/ui/icons'
 import { getCategoryName, type Concept } from '@/data/concepts'
+import { noOrphan } from '@/lib/format'
 import { cn, revealDelay } from '@/lib/style'
 
 import { ShortlistButton } from './ShortlistButton'
@@ -45,10 +46,10 @@ export function ConceptCard({ concept, index = 0, className }: ConceptCardProps)
             href={`/concept/${concept.slug}`}
             className="after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-4 focus-visible:after:outline-accent-ink"
           >
-            {concept.name}
+            {noOrphan(concept.name)}
           </Link>
         </h3>
-        <p className="mt-2 flex-1 text-[15px] leading-relaxed font-light text-muted">{concept.summary}</p>
+        <p className="mt-2 flex-1 text-[15px] leading-relaxed font-light text-muted">{noOrphan(concept.summary)}</p>
         <div className="mt-5 flex items-center justify-between gap-3">
           <span className="inline-flex items-center gap-2 whitespace-nowrap text-[12px] font-medium uppercase tracking-[0.16em] text-accent-ink">
             Xem chi tiết

@@ -47,9 +47,8 @@ export default function HomePage() {
       <HeroSection />
       <IntroSection />
       <FeaturedConcepts />
-      <PricingPreview />
       <GalleryPreview />
-      <ProcessSection />
+      <PricingPreview />
       <ContactCta />
     </>
   )

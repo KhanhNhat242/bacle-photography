@@ -6,6 +6,7 @@ import { useSyncExternalStore } from 'react'
 // Mọi thao tác storage đều bọc try/catch: không đọc/ghi được thì vẫn chạy trong bộ nhớ.
 
 const STORAGE_KEY = 'bacle:concept-shortlist'
+// Giả định A4: shortlist giữ tối đa 3 concept (form đặt lịch chỉ chốt 1)
 export const SHORTLIST_LIMIT = 3
 
 export type ShortlistState = {
@@ -77,4 +78,9 @@ export function toggleConcept(slug: string) {
     return
   }
   emit({ ...current, slugs: [...current.slugs, slug] })
+}
+
+// Gửi đặt lịch thành công thì xoá shortlist (F08)
+export function clearShortlist() {
+  emit({ slugs: [], limitReachedAt: 0 })
 }

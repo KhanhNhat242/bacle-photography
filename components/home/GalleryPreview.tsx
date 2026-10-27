@@ -1,46 +1,42 @@
-import { GalleryGrid, type GalleryTile } from '@/components/gallery/GalleryGrid'
-import { ButtonLink } from '@/components/ui/ButtonLink'
-import { ArrowRightIcon } from '@/components/ui/icons'
+import { GalleryGrid, type GalleryColumn } from '@/components/gallery/GalleryGrid'
+import { SparkleIcon } from '@/components/ui/icons'
 import { Section } from '@/components/ui/Section'
 import { SectionHeading } from '@/components/ui/SectionHeading'
-import { photos } from '@/data/photos'
+import { galleryCollection } from '@/data/gallery'
+import { sectionIds } from '@/data/site'
 
-// Lưới 3 cột × 4 hàng (từ md): mỗi cột có 1 ô cao (2 hàng) đặt so le để tạo nhịp.
-// Mobile: 2 cột ô vuông, hiện 6 ảnh; lightbox vẫn xem được đủ 9 ảnh.
-const tiles: GalleryTile[] = [
-  { image: photos.pinkAltarBride, className: 'md:col-[1] md:row-[1/span_2]' },
-  { image: photos.confettiCeremony, className: 'md:col-[2] md:row-[1]' },
-  { image: photos.veilPortrait, className: 'md:col-[3] md:row-[1]' },
-  { image: photos.vuQuyPetals, className: 'md:col-[2] md:row-[2/span_2]' },
-  { image: photos.gardenCheers, className: 'md:col-[3] md:row-[2]' },
-  { image: photos.palaceWindows, className: 'md:col-[1] md:row-[3]' },
-  { image: photos.ringCeremony, className: 'hidden md:col-[3] md:row-[3/span_2] md:block' },
-  { image: photos.redProcession, className: 'hidden md:col-[1] md:row-[4] md:block' },
-  { image: photos.studioSweet, className: 'hidden md:col-[2] md:row-[4] md:block' },
+// Lưới 5 cột đối xứng, chân các cột thẳng hàng (desktop):
+// hai cột ngoài: ảnh dọc + ảnh ngang thấp · hai cột kế: ảnh dọc cao · cột giữa: ảnh thấp nhất + nút "Xem thêm".
+// Đỉnh các cột hạ dần vào giữa tạo hình bậc thang. Chiều cao tính theo --gu (đơn vị co theo màn hình).
+// Mobile: 2 cột ô vuông – 6 ảnh (ẩn ô ngang cột 5) + nút "Xem thêm" ở cuối.
+const columns: GalleryColumn[] = [
+  { tiles: ['lg:h-[calc(var(--gu)*22)]', 'lg:h-[calc(var(--gu)*10.5)]'] },
+  { tiles: ['lg:h-[calc(var(--gu)*30)]'] },
+  {
+    tiles: ['lg:h-[calc(var(--gu)*19.5)]'],
+    withMore: true,
+    decoration: <SparkleIcon className="size-7 text-accent" />,
+  },
+  { tiles: ['lg:h-[calc(var(--gu)*30)]'] },
+  { tiles: ['lg:h-[calc(var(--gu)*23)]', 'hidden lg:block lg:h-[calc(var(--gu)*10.5)]'] },
 ]
 
 // Section 5 – Bộ sưu tập xem trước
 export function GalleryPreview() {
   return (
-    <Section aria-labelledby="gallery-title">
+    <Section id={sectionIds.gallery} tone="ivory" aria-labelledby="gallery-title">
       <SectionHeading
         id="gallery-title"
         eyebrow="Bộ sưu tập"
         title="Khoảnh khắc yêu thương tại BACLE"
-        description="Chạm vào từng khung hình để cảm nhận niềm hạnh phúc."
+        description=""
       />
 
       <GalleryGrid
-        tiles={tiles}
-        className="grid grid-cols-2 gap-3 *:aspect-square sm:gap-4 md:grid-cols-3 md:auto-rows-[170px] md:*:aspect-auto lg:auto-rows-[210px] lg:gap-6 xl:auto-rows-[235px]"
+        images={galleryCollection}
+        columns={columns}
+        className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-[1fr_1.08fr_1fr_1.08fr_1fr] lg:items-end lg:gap-5 lg:[--gu:0.78rem] xl:[--gu:0.95rem]"
       />
-
-      <div data-reveal="up" className="mt-10 flex justify-center lg:mt-14">
-        <ButtonLink href="/bo-suu-tap" variant="outline">
-          Khám phá toàn bộ thư viện ảnh
-          <ArrowRightIcon className="size-4" />
-        </ButtonLink>
-      </div>
     </Section>
   )
 }

@@ -1,22 +1,39 @@
+import { BOOKING_FORM_ID } from '@/components/booking/bookingAnchor'
+import { BookingForm } from '@/components/booking/BookingForm'
 import { ButtonLink } from '@/components/ui/ButtonLink'
-import { ArrowRightIcon, MapPinIcon, PhoneIcon, ZaloIcon } from '@/components/ui/icons'
+import { MapPinIcon, PhoneIcon, ZaloIcon } from '@/components/ui/icons'
 import { Section } from '@/components/ui/Section'
 import { Eyebrow } from '@/components/ui/SectionHeading'
 import { Sprig } from '@/components/ui/Sprig'
-import { mapEmbedUrl, site } from '@/data/site'
-import { revealDelay } from '@/lib/style'
+import { concepts } from '@/data/concepts'
+import { packages } from '@/data/packages'
+import { mapEmbedUrl, sectionIds, site } from '@/data/site'
+import { formatPrice } from '@/lib/format'
 
-// Section 7 – CTA cuối trang & liên hệ: hộp bo góc nền ngà viền champagne, chữ trái – bản đồ phải
+const conceptOptions = concepts.map((concept) => ({ value: concept.slug, label: concept.name }))
+// Giá chưa được khách xác nhận (isDemo) ghi kèm "giá tham khảo"
+const packageOptions = packages.map((item) => ({
+  value: item.id,
+  label:
+    item.price === null
+      ? `${item.name} · Liên hệ`
+      : `${item.name} · ${formatPrice(item.price)}${item.isDemo ? ' (giá tham khảo)' : ''}`,
+}))
+
+// Section 7 – CTA cuối trang: nền ngà phủ kín section, form đặt lịch trên thẻ nền kem.
+// Desktop: cột trái lời mời + liên hệ nhanh + bản đồ, cột phải form đặt lịch (F08).
+// Mobile: lời mời → form → bản đồ (đúng thứ tự DOM, desktop đặt lại vị trí bằng grid).
 export function ContactCta() {
   return (
-    <Section aria-labelledby="cta-title">
+    // Nền ngà phủ kín cả section (không còn hộp viền bên trong); khoảng đệm do <Section> lo
+    <Section id={sectionIds.contact} tone="ivory" aria-labelledby="cta-title">
       <div
         data-reveal="up"
-        className="relative grid overflow-hidden rounded-[1.75rem] border border-accent bg-ivory lg:grid-cols-2"
+        className="relative grid gap-y-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:grid-rows-[auto_1fr] lg:gap-x-14 xl:gap-x-20"
       >
-        <Sprig className="deco-float absolute -right-2 top-4 w-14 text-accent/70 lg:hidden" />
+        <Sprig className="deco-float absolute -right-2 -top-6 w-14 text-accent/70 lg:hidden" />
 
-        <div className="relative px-6 py-10 sm:px-10 sm:py-12 lg:px-14 lg:py-16">
+        <div className="relative lg:pt-6">
           <Eyebrow>Đặt lịch chụp</Eyebrow>
           <h2
             id="cta-title"
@@ -25,15 +42,12 @@ export function ContactCta() {
             Cùng BACLE ghi dấu ngày chung đôi của hai bạn
           </h2>
           <p className="mt-5 max-w-lg text-[15px] leading-relaxed font-light text-pretty text-muted lg:text-base">
-            Gửi yêu cầu đặt lịch hoặc nhắn tin ngay để nhận tư vấn concept phù hợp nhất.
+            Để lại thông tin, BACLE sẽ gọi lại tư vấn concept và lên lịch chụp phù hợp với hai bạn. Cần trao đổi
+            ngay? Gọi hoặc nhắn Zalo nhé.
           </p>
 
           {/* items-start trên mobile: nút không kéo dài tới vùng cụm nút nổi bên phải */}
           <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:flex-wrap">
-            <ButtonLink href="/dat-lich">
-              Đặt lịch chụp ngay
-              <ArrowRightIcon className="size-4" />
-            </ButtonLink>
             <ButtonLink href={`tel:${site.phoneE164}`} variant="outline">
               <PhoneIcon className="size-4" />
               Gọi {site.phoneDisplay}
@@ -43,27 +57,25 @@ export function ContactCta() {
               Nhắn Zalo
             </ButtonLink>
           </div>
-
-          <p className="mt-8 flex items-center gap-2 text-[14px] font-light text-muted">
-            <MapPinIcon className="size-4 shrink-0 text-accent-ink" />
-            {site.address ?? `TP. ${site.city}`}
-            <span aria-hidden="true">·</span>
-            <a
-              href={site.mapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-ink underline decoration-accent underline-offset-4 transition-colors hover:text-accent-ink"
-            >
-              Chỉ đường
-            </a>
-          </p>
         </div>
 
-        <div
-          data-reveal="up"
-          style={revealDelay(200)}
-          className="relative min-h-[320px] border-t border-accent/40 sm:min-h-[380px] lg:min-h-full lg:border-l lg:border-t-0"
-        >
+        <div className="lg:col-start-2 lg:row-span-2 lg:row-start-1">
+          {/* Đích cuộn của nút "Đặt lịch gói này"; scroll-mt chừa chỗ cho header cố định */}
+          <div
+            id={BOOKING_FORM_ID}
+            className="scroll-mt-24 rounded-[1.5rem] border border-line bg-cream p-5 shadow-sm shadow-ink/5 sm:p-8"
+          >
+            <h3 className="font-serif text-[1.6rem] font-medium leading-tight text-ink sm:text-[1.85rem]">
+              Gửi yêu cầu đặt lịch
+            </h3>
+            <p className="mt-2 mb-6 text-[14px] font-light text-muted">
+              Đây là yêu cầu tư vấn – BACLE sẽ gọi lại để xác nhận lịch chụp với hai bạn.
+            </p>
+            <BookingForm conceptOptions={conceptOptions} packageOptions={packageOptions} />
+          </div>
+        </div>
+
+        <div className="relative min-h-[260px] overflow-hidden rounded-[1.25rem] border border-accent/40 sm:min-h-[300px] lg:col-start-1 lg:row-start-2">
           <iframe
             title={`Bản đồ vị trí ${site.name}`}
             src={mapEmbedUrl}

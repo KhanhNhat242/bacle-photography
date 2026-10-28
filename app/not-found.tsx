@@ -12,7 +12,7 @@ export default function NotFound() {
       <Image src={logo} alt={site.name} className="h-12 w-auto" sizes="200px" />
       <p className="mt-10 font-serif text-7xl font-medium text-accent-ink">404</p>
       <h1 className="mt-4 font-serif text-[2.2rem] font-medium text-ink">Không tìm thấy trang</h1>
-      <p className="mt-3 max-w-md text-[15px] font-light text-muted">
+      <p className="mt-3 max-w-md text-[15px] font-light text-muted-foreground">
         Trang bạn tìm có thể đã được di chuyển hoặc chưa sẵn sàng. Mời hai bạn quay lại trang chủ nhé.
       </p>
       <ButtonLink href="/" className="mt-9">

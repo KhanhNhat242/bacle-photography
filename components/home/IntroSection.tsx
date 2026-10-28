@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
+import { MetallicSwirl } from '@/components/home/MetallicSwirl'
 import { ArrowRightIcon } from '@/components/ui/icons'
 import { Section } from '@/components/ui/Section'
 import { Eyebrow } from '@/components/ui/SectionHeading'
@@ -12,10 +13,35 @@ import { revealDelay } from '@/lib/style'
 const portrait = photos.studioForeheadKiss
 const ring = photos.ringExchange
 
-// Section 2 – Giới thiệu ngắn: 2 cột bất đối xứng, ảnh đặt lệch tầng bên trái, chữ bên phải
+// Section 2 – Giới thiệu ngắn: 2 cột bất đối xứng, ảnh đặt lệch tầng bên trái, chữ bên phải,
+// trên nền kim loại lỏng xoáy (MetallicSwirl) – tâm xoáy sau cụm ảnh, cột chữ phủ kem cho êm
 export function IntroSection() {
   return (
-    <Section id={sectionIds.intro} tone="ivory" aria-labelledby="intro-title">
+    // isolate + overflow-hidden: nền -z-10 nằm gọn trong section.
+    // border-t-0!: bỏ đường kẻ phân cách, chuyển tiếp với hero bằng dải kem mờ dần bên dưới
+    <Section
+      id={sectionIds.intro}
+      tone="ivory"
+      aria-labelledby="intro-title"
+      className="relative isolate overflow-hidden border-t-0!"
+    >
+      <MetallicSwirl center={[-0.45, 0.05]} className="absolute inset-0 -z-10" />
+      {/* Lớp kem để chữ nổi: mobile phủ đều (chữ nằm dưới ảnh), desktop đậm dần về cột chữ bên phải */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-cream/55 lg:bg-transparent lg:bg-linear-to-l lg:from-cream/85 lg:via-cream/55 lg:via-45% lg:to-cream/0"
+      />
+      {/* Chuyển tiếp: mép trên/dưới tan dần về kem – cùng màu đáy hero và nền Concept nổi bật,
+          nên nền xoáy hiện dần lên rồi lặn xuống thay vì cắt ngang bằng đường kẻ */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-28 bg-linear-to-b from-cream to-cream/0 lg:h-44"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-28 bg-linear-to-t from-cream to-cream/0 lg:h-44"
+      />
+
       <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-10">
         <div className="relative mx-auto w-full max-w-md pb-14 pr-10 sm:max-w-lg sm:pb-16 sm:pr-16 lg:col-span-6 lg:max-w-none lg:pb-20 lg:pr-24">
           {/* Khung viền mảnh lệch nhẹ phía sau ảnh chính */}
@@ -70,7 +96,7 @@ export function IntroSection() {
           <p
             data-reveal="up"
             style={revealDelay(200)}
-            className="mt-6 text-[15px] leading-[1.9] font-light text-pretty text-muted lg:text-[17px]"
+            className="mt-6 text-[15px] leading-[1.9] font-light text-pretty text-muted-foreground lg:text-[17px]"
           >
             Tại {site.name}, chúng tôi tin rằng vẻ đẹp động lòng người nhất chính là ánh mắt và nụ cười tự
             nhiên của hai bạn trong ngày trọng đại. Mỗi bộ ảnh được chăm chút tỉ mỉ từ ánh sáng đến cảm xúc để

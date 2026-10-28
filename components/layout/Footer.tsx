@@ -8,7 +8,7 @@ import { cn } from '@/lib/style'
 import logo from '@/public/images/brand/logo-bacle.png'
 
 const linkClass =
-  'inline-flex items-center gap-3 text-[15px] font-light text-muted transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-accent-ink'
+  'inline-flex items-center gap-3 text-[15px] font-light text-muted-foreground transition-colors hover:text-ink focus-visible:outline-2 focus-visible:outline-accent-ink'
 
 export function Footer() {
   return (
@@ -18,7 +18,7 @@ export function Footer() {
           <div className="md:col-span-5">
             <Image src={logo} alt={site.name} className="h-12 w-auto" sizes="200px" />
             <p className="mt-5 font-script text-3xl text-accent-ink">{site.tagline}</p>
-            <p className="mt-3 max-w-sm text-[15px] leading-relaxed font-light text-muted">
+            <p className="mt-3 max-w-sm text-[15px] leading-relaxed font-light text-muted-foreground">
               Studio chụp ảnh cưới tại TP. {site.city} – lưu giữ câu chuyện tình yêu của hai bạn.
             </p>
           </div>
@@ -78,7 +78,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-2 border-t border-line py-6 pb-24 text-[13px] font-light text-muted sm:flex-row sm:items-center sm:justify-between sm:pb-6 sm:pr-20">
+        <div className="flex flex-col gap-2 border-t border-line py-6 pb-24 text-[13px] font-light text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:pb-6 sm:pr-20">
           <p>© {site.name}</p>
           <p>Chụp ảnh cưới · TP. {site.city}</p>
         </div>

@@ -94,7 +94,7 @@ export function BookingForm({ conceptOptions, packageOptions }: BookingFormProps
             <CheckIcon className="size-6" />
           </span>
           <h3 className="mt-5 font-serif text-[1.75rem] font-medium leading-tight text-ink">Đã nhận yêu cầu</h3>
-          <p className="mt-3 max-w-md text-[15px] leading-relaxed font-light text-muted">
+          <p className="mt-3 max-w-md text-[15px] leading-relaxed font-light text-muted-foreground">
             Cảm ơn hai bạn! BACLE sẽ liên hệ trong thời gian sớm nhất để tư vấn và xác nhận lịch chụp.
           </p>
           <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center">

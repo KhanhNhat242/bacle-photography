@@ -3,13 +3,15 @@ import type { MouseEventHandler, ReactNode } from 'react'
 
 import { cn } from '@/lib/style'
 
-type Variant = 'primary' | 'outline' | 'ghost'
+type Variant = 'primary' | 'outline' | 'outline-light' | 'ghost'
 type Size = 'md' | 'sm'
 
 const variants: Record<Variant, string> = {
   // nền champagne + chữ ink: đạt tương phản AA (chữ trắng trên champagne thì không)
   primary: 'bg-accent text-ink hover:bg-ink hover:text-cream',
   outline: 'border border-ink/70 text-ink hover:border-ink hover:bg-ink hover:text-cream',
+  // dùng trên nền tối (thẻ ink)
+  'outline-light': 'border border-cream/50 text-cream hover:border-cream hover:bg-cream hover:text-ink',
   ghost: 'text-ink hover:text-accent-ink',
 }
 

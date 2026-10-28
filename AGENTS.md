@@ -68,7 +68,8 @@ docs/REQUIREMENTS.md
 ## 4. Giao diện & thiết kế
 
 - Phong cách: hiện đại, tươi sáng, **trắng kem**, nhiều khoảng trắng, ảnh là trọng tâm. **Không có dark mode.**
-- Màu chỉ dùng token đã khai báo trong `app/globals.css` (`cream`, `ivory`, `line`, `ink`, `muted`, `accent`, `accent-ink` — xem mục 6 tài liệu). Không viết mã hex rời rạc trong component; cần màu mới → thêm token và cập nhật tài liệu.
+- Màu chỉ dùng token đã khai báo trong `app/globals.css` (`cream`, `ivory`, `line`, `ink`, `muted-foreground`, `accent`, `accent-ink` — xem mục 6 tài liệu). Không viết mã hex rời rạc trong component; cần màu mới → thêm token và cập nhật tài liệu.
+- Chữ phụ dùng `text-muted-foreground`, **không** dùng `text-muted` (`muted` là màu nền theo quy ước shadcn/ui). Biến semantic của shadcn trong `globals.css` phải trỏ về token thương hiệu; chạy lại `shadcn init` sẽ ghi đè chúng → kiểm tra và khôi phục.
 - **Chữ** màu champagne luôn dùng `text-accent-ink`, không dùng `text-accent` (không đạt tương phản). `accent` chỉ dành cho nền nút, viền, đường kẻ, icon trang trí. Nút chính: `bg-accent text-ink`, không đặt chữ trắng trên nền champagne.
 - Section mới dùng `<Section tone="cream|ivory">` + `<SectionHeading>` để giữ khoảng cách chuẩn và nhịp nền xen kẽ. Không tự đặt padding dọc riêng cho từng section.
 - Nút/link dạng nút dùng `ButtonLink`. Không truyền class đổi `display` (`hidden`, `block`…) vào `ButtonLink` vì nó luôn có `inline-flex`; muốn ẩn/hiện theo breakpoint thì bọc bằng một thẻ ngoài.

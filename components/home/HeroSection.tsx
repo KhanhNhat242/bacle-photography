@@ -1,6 +1,7 @@
 import Image from 'next/image'
 
 import { ButtonLink } from '@/components/ui/ButtonLink'
+import { MetallicSwirl } from '@/components/home/MetallicSwirl'
 import { CameraIcon, SparkleIcon } from '@/components/ui/icons'
 import { Sprig } from '@/components/ui/Sprig'
 import { photos } from '@/data/photos'
@@ -25,7 +26,8 @@ const highlights = [
 
 // Section 1 – Hero: vừa đúng một màn hình.
 // Mobile/tablet: ảnh phủ toàn màn hình, chữ nằm trên lớp chuyển màu kem phía dưới.
-// Desktop (lg): chia đôi – ảnh tràn mép bên trái (44%), panel kem bên phải chứa chữ;
+// Desktop (lg): chia đôi – ảnh tràn mép bên trái (44%), panel bên phải chứa chữ trên nền kim loại lỏng
+// xoáy (MetallicSwirl, WebGL – chỉ desktop vì mobile ảnh đã phủ kín màn hình);
 // đáy panel có ảnh nhỏ vắt qua mép giữa hai nửa và 2 điểm nhấn.
 // --hero-thumb: cỡ ảnh nhỏ co theo chiều cao màn hình để hero luôn vừa một màn hình.
 export function HeroSection() {
@@ -61,6 +63,16 @@ export function HeroSection() {
           Bacle
         </p>
       </div>
+      <div
+        aria-hidden="true"
+        className="absolute inset-y-0 right-0 left-[44%] -z-10 hidden bg-linear-to-r from-cream/80 via-cream/45 via-55% to-cream/0 lg:block"
+      />
+      {/* Đáy panel tan về kem để nối liền với mép trên của Intro (cũng tan từ kem) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 right-0 left-[44%] -z-10 hidden h-40 bg-linear-to-t from-cream to-cream/0 lg:block"
+      />
+
       {/* Lớp chuyển kem để chữ luôn dễ đọc trên ảnh (chỉ mobile/tablet) */}
       <div
         aria-hidden="true"
@@ -84,7 +96,7 @@ export function HeroSection() {
             Lưu giữ trọn vẹn khoảnh khắc ngày <em className="font-normal text-accent-ink">chung đôi</em>
           </h1>
           <p
-            className="hero-rise mt-5 max-w-md text-[15px] leading-relaxed font-light text-pretty text-ink/80 sm:text-base lg:mt-6 lg:pb-15 lg:text-lg lg:text-muted"
+            className="hero-rise mt-5 max-w-md text-[15px] leading-relaxed font-light text-pretty text-ink/80 sm:text-base lg:mt-6 lg:pb-15 lg:text-lg lg:text-muted-foreground"
             style={heroDelay(420)}
           >
             Ghi lại câu chuyện tình yêu của hai bạn bằng những khung hình tự nhiên và tinh tế nhất.

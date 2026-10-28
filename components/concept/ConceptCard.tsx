@@ -49,7 +49,7 @@ export function ConceptCard({ concept, index = 0, className }: ConceptCardProps)
             {noOrphan(concept.name)}
           </Link>
         </h3>
-        <p className="mt-2 flex-1 text-[15px] leading-relaxed font-light text-muted">{noOrphan(concept.summary)}</p>
+        <p className="mt-2 flex-1 text-[15px] leading-relaxed font-light text-muted-foreground">{noOrphan(concept.summary)}</p>
         <div className="mt-5 flex items-center justify-between gap-3">
           <span className="inline-flex items-center gap-2 whitespace-nowrap text-[12px] font-medium uppercase tracking-[0.16em] text-accent-ink">
             Xem chi tiết

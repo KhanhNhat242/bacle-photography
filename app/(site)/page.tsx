@@ -48,6 +48,7 @@ export default function HomePage() {
       <IntroSection />
       <FeaturedConcepts />
       <GalleryPreview />
+      <ProcessSection />
       <PricingPreview />
       <ContactCta />
     </>

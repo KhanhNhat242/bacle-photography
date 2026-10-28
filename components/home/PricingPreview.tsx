@@ -1,7 +1,4 @@
-import Link from 'next/link'
-
 import { PackageCard } from '@/components/package/PackageCard'
-import { ArrowRightIcon } from '@/components/ui/icons'
 import { Section } from '@/components/ui/Section'
 import { SectionHeading } from '@/components/ui/SectionHeading'
 import { packages } from '@/data/packages'

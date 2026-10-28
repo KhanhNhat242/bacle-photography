@@ -1,13 +1,13 @@
 'use client'
 
-import type { MouseEvent, ReactNode } from 'react'
+import type { ComponentProps, MouseEvent, ReactNode } from 'react'
 
 import { BOOKING_FORM_ID, SELECT_PACKAGE_EVENT } from '@/components/booking/bookingAnchor'
 import { ButtonLink } from '@/components/ui/ButtonLink'
 
 type BookPackageButtonProps = {
   packageId: string
-  variant?: 'primary' | 'outline'
+  variant?: ComponentProps<typeof ButtonLink>['variant']
   className?: string
   children: ReactNode
 }

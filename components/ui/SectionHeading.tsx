@@ -58,7 +58,7 @@ export function SectionHeading({
         <p
           data-reveal="up"
           style={revealDelay(200)}
-          className="mt-4 text-[15px] leading-relaxed font-light text-pretty text-muted lg:text-base"
+          className="mt-4 text-[15px] leading-relaxed font-light text-pretty text-muted-foreground lg:text-base"
         >
           {typeof description === 'string' ? noOrphan(description) : description}
         </p>

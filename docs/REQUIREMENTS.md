@@ -110,12 +110,14 @@ Ngoài ra (hạ tầng, không phải chức năng riêng): Header/menu, Footer,
 Các khối theo thứ tự:
 1. **Hero:** ảnh cưới toàn màn hình (hoặc slideshow nhẹ), logo, tagline, 2 nút: "Đặt lịch chụp" → `/dat-lich`, "Xem concept" → `/concept`.
 2. **Giới thiệu ngắn:** 2–3 câu + link "Về BACLE" → `/gioi-thieu`.
-3. **Concept nổi bật:** 3–6 concept có `featured: true`, hiển thị dạng **coverflow** + link "Xem tất cả".
-   - Bố cục: thẻ chính lớn ở giữa, các thẻ phụ nhỏ dần về hai bên, xoay vòng.
-   - Ảnh concept phủ kín thẻ làm nền, chữ đặt đè lên ảnh.
-   - Chuyển thẻ: **bấm** vào thẻ phụ thì cả dải trượt ngang (chậm, ~1,1 giây) đưa thẻ đó vào giữa. Vuốt, phím ←/→ và nút mũi tên cũng chuyển được. Hover chỉ làm sáng nhẹ thẻ phụ, không chuyển thẻ.
-   - Thẻ phụ nghiêng nhẹ theo phối cảnh 3D (xoay quanh trục dọc, mặt hướng vào thẻ giữa), thẻ càng xa nghiêng càng nhiều.
-   - Chỉ thẻ ở giữa mới hiện mô tả, link "Xem chi tiết" và nút "Chọn concept" (F07).
+   - Nền kim loại lỏng xoáy (`MetallicSwirl`, dùng chung với hero) – tâm xoáy sau cụm ảnh bên trái, cột chữ phủ lớp kem mờ để nổi lên.
+3. **Concept nổi bật:** 3–6 concept có `featured: true`, hiển thị bằng **FlexCarousel** (React Bits, WebGL qua `ogl` — `components/FlexCarousel.jsx`), preset `liquid`.
+   - Carousel tràn hết bề ngang màn hình; thẻ cao 72% khung, giữ tỉ lệ ảnh.
+   - **Điều khiển bằng cuộn trang:** cuộn tới section thì carousel được ghim (sticky, cao bằng màn hình trừ header); cuộn dọc tiếp sẽ trượt lần lượt sang thẻ kế (mỗi thẻ ~55svh quãng cuộn); qua thẻ cuối thì trang cuộn tiếp bình thường. Cuộn ngược lại thì trượt về thẻ trước.
+   - Chỉ thẻ giữa có chữ đè lên ảnh (loại concept, tên, mô tả ngắn, số thứ tự `01/05`) trên lớp tối dần về đáy; thẻ phụ hai bên không có chữ. Chữ ẩn trong lúc cuộn, lúc dải thẻ trượt hoặc lệch tâm, lúc phóng to; chỉ hiện khi đã dừng và có đúng một thẻ nằm giữa.
+   - Chuyển thẻ: kéo/vuốt, phím ←/→, vuốt ngang trackpad, bấm thẻ bên cạnh để đưa vào giữa; bấm thẻ giữa (hoặc Enter) để phóng to, Esc để đóng.
+   - Ảnh nạp vào canvas qua URL tối ưu của `next/image` (`getImageProps`), không dùng file gốc.
+   - Nút "Chọn concept" (F07) nằm ở F03/F04, không đặt trên carousel này.
 4. **Bảng giá tóm tắt:** các gói (rút gọn từ F05) + link "Xem chi tiết bảng giá".
 5. **Bộ sưu tập xem trước:** bộ 30 ảnh khai báo trong `data/gallery.ts`.
    - Desktop: lưới **5 cột đối xứng**, chân các cột thẳng hàng, đỉnh các cột hạ dần vào giữa.
@@ -125,9 +127,12 @@ Các khối theo thứ tự:
    - Lưới hiện 7 ảnh. Mobile: 2 cột ô vuông với 6 ảnh, nút "Xem thêm" nằm cuối lưới, căn giữa.
    - Bấm "Xem thêm" mở lightbox toàn màn hình xem ảnh cỡ lớn, bắt đầu từ ảnh đầu tiên chưa hiện trên lưới (ảnh 8/30); ←/→, vuốt hoặc nút mũi tên để xem tiếp. Bấm ảnh trên lưới cũng mở lightbox tại ảnh đó (xem đủ 30 ảnh).
    - 23 ảnh trong phần "Xem thêm" được bốc ngẫu nhiên một lần (seed cố định) từ thư viện, đã loại ảnh review/collage.
-6. **Quy trình chụp** (tuỳ chọn): Tư vấn → Chọn concept → Chụp → Hậu kỳ → Nhận ảnh.
+6. **Quy trình chụp** (tuỳ chọn): 4 bước Tư vấn → Chọn concept → Ngày chụp → Hậu kỳ & nhận ảnh.
+   - 4 cột số lớn 01–04, đường chấm dưới số, tiêu đề, mô tả, nút "Tìm hiểu thêm" trỏ tới section liên quan.
+   - Mặc định nền trơn; hover/focus vào bước nào thì ảnh nền của bước đó (lấy từ thư viện) hiện lên với lớp phủ tối, chữ chuyển màu kem.
 7. **CTA cuối trang:** kêu gọi đặt lịch + SĐT/Zalo + **form đặt lịch nhúng** (cùng component, quy tắc kiểm tra và Server Action với F08 — `components/booking/BookingForm.tsx`) + bản đồ nhỏ.
    - Desktop: cột trái là lời mời, nút gọi/Zalo, địa chỉ và bản đồ; cột phải là form trên thẻ nền kem. Mobile: lời mời → form → bản đồ.
+   - Nền section là ảnh `contact-banner` (`photos.contactBanner`) với hiệu ứng mở rộng theo cuộn (theo ScrollExpand của React Bits — `components/home/ContactBackdrop.tsx`): ban đầu là khung ảnh nhỏ bo góc (42% × 58% màn hình, mobile 80% bề ngang) giữ nguyên độ đậm, có tagline chữ script ở giữa; cuộn tiếp thì khung được ghim và mở ra toàn màn hình, ảnh thu từ zoom 1,35 về 1 và mờ dần còn 28%. Khi khung mở ~60%, lời mời + form đặt lịch + bản đồ cuộn lên đè trên ảnh đang ghim. Dưới `prefers-reduced-motion`: hiện thẳng trạng thái cuối.
 
 ### F02 — Giới thiệu `/gioi-thieu`
 - Câu chuyện thương hiệu, phong cách chụp, đội ngũ (nếu có), lý do chọn BACLE (USP — **đang thiếu**, xem Q3).
@@ -300,9 +305,11 @@ type BookingRequest = {
   | `ivory` | `#F7F1E8` | Nền khối xen kẽ |
   | `line` | `#EFE8DC` | Viền, đường kẻ (đã có trong `globals.css`) |
   | `ink` | `#1C1A17` | Chữ chính, logo |
-  | `muted` | `#6B645A` | Chữ phụ |
+  | `muted-foreground` | `#6B645A` | Chữ phụ (`text-muted-foreground`) |
   | `accent` | `#B8956A` | Champagne: nền nút chính, viền, đường kẻ, icon trang trí |
   | `accent-ink` | `#7F5F37` | Champagne đậm cho **chữ** nhấn (eyebrow, số bước, giá, link) |
+
+  Biến semantic của shadcn/ui (`background`, `foreground`, `primary`, `secondary`, `muted`, `border`, `input`, `ring`…) không có màu riêng mà trỏ về các token trên trong `globals.css`. Riêng `muted` là màu **nền** theo quy ước shadcn (= `ivory`), nên chữ phụ dùng `muted-foreground`.
 
   Champagne `#B8956A` chỉ đạt tương phản ~2,7:1 trên nền sáng, nên **không dùng cho chữ**. Chữ trắng đặt trên nền champagne cũng không đạt chuẩn. Vì vậy nút chính dùng nền `accent` với chữ `ink` (6,2:1). Còn `accent-ink` đạt ≥ 5:1 trên cả `cream` và `ivory`.
 
@@ -320,7 +327,7 @@ type BookingRequest = {
   - Mobile/tablet: ảnh phủ toàn màn hình, chữ đặt trên lớp chuyển kem.
   - Desktop (từ `lg`): bố cục chia đôi.
     - Nửa trái (44%) là ảnh chính tràn mép trên, trái và dưới; logo nằm trên ảnh, có chữ chìm "BACLE" ở góc dưới.
-    - Nửa phải là panel kem chứa tagline, H1, mô tả và 2 nút. Đáy panel có ảnh nhỏ vắt qua mép giữa hai nửa cùng 2 điểm nhấn có icon.
+    - Nửa phải là panel nền kim loại lỏng xoáy tông kem–champagne (`components/home/MetallicSwirl.tsx`, WebGL qua `ogl`, màu đọc từ token; phủ lớp kem mờ dần từ trái để vùng chữ êm; dừng vẽ khi khuất màn hình; khung tĩnh dưới `prefers-reduced-motion`), chứa tagline, H1, mô tả và 2 nút. Đáy panel có ảnh nhỏ vắt qua mép giữa hai nửa cùng 2 điểm nhấn có icon.
   - Hero chạy hiệu ứng bằng CSS (`.hero-rise`, `.hero-zoom`, `.hero-unveil`), **không dùng `data-reveal`** để không làm chậm LCP.
 - **Header trên trang chủ** có 2 trạng thái:
   - Khi đang ở đầu trang (chưa cuộn): nền trong suốt từ `lg`, menu ngang dịch sang phải, căn thẳng với lề chữ của panel phải; nút "Đặt lịch chụp" trên header ẩn vì hero đã có nút này.
@@ -422,3 +429,15 @@ type BookingRequest = {
 | 27/10/2026 | F01.7 nhúng form đặt lịch (F08) vào CTA cuối trang. Dựng `lib/bookings/` (kiểu, quy tắc kiểm tra dùng chung, Server Action, repository file JSON – giả định A7). Thêm `ConfigProvider` antd khớp token màu và dependency `dayjs` (antd DatePicker dùng dayjs, cần locale tiếng Việt) | Dev |
 | 27/10/2026 | F08: bỏ trường "Kênh liên hệ ưu tiên"; concept chỉ chọn 1 (`conceptSlug`). F05: nút "Đặt lịch gói này" trên trang chủ cuộn xuống form CTA và chọn sẵn gói | Dev |
 | 27/10/2026 | Menu header/footer chuyển sang điều hướng trong một trang: anchor tới section trang chủ, cuộn mượt, tự active theo section đang xem. Các route riêng F02–F09 không còn nằm trong menu | Dev |
+| 28/10/2026 | F01.6 Quy trình chụp rút còn 4 bước, bố cục 4 cột số lớn; ảnh nền từng bước chỉ hiện khi hover/focus | Dev |
+| 28/10/2026 | F01.4/F05 Thẻ gói giá đổi sang `SpotlightCard` nền `ink` (spotlight kem theo con trỏ, gói nổi bật viền champagne); thêm biến thể `outline-light` cho `ButtonLink` | Dev |
+| 28/10/2026 | Sau khi cài shadcn/ui: khôi phục bảng màu thương hiệu; token chữ phụ đổi tên `muted` → `muted-foreground` (tránh trùng màu nền `muted` của shadcn); biến semantic shadcn trỏ về token thương hiệu; bỏ khối `.dark`, biến thể `dark:` chỉ chạy với class `.dark` | Dev |
+| 28/10/2026 | F01.3 Concept nổi bật đổi từ coverflow sang FlexCarousel (React Bits, dependency `ogl` cho WebGL); thêm `FlexCarousel.d.ts` để dùng trong TS strict, nhãn trợ năng tiếng Việt | Dev |
+| 28/10/2026 | F01.3 FlexCarousel tràn hết bề ngang, thẻ cao hơn; chữ mô tả đè lên thẻ giữa (`ConceptFlexCarousel`), thẻ phụ không có chữ | Dev |
+| 28/10/2026 | F01.3 FlexCarousel điều khiển bằng cuộn trang (ghim sticky, cuộn dọc chuyển thẻ, hết thẻ cuộn tiếp); chữ trên thẻ giữa chỉ hiện khi đã dừng đúng tâm thẻ | Dev |
+| 28/10/2026 | F01.7 CTA cuối trang dùng ảnh `contact-banner` làm nền, phủ lớp ngà để nội dung trái và form phải nổi lên | Dev |
+| 28/10/2026 | F01.7 Nền CTA cuối trang đổi sang hiệu ứng mở rộng ảnh theo cuộn (khung nhỏ → toàn màn hình, mờ dần), nội dung + form cuộn lên đè trên ảnh | Dev |
+| 28/10/2026 | F01.4/F05 Thẻ gói giá: hover nghiêng theo con trỏ + phóng nhẹ, đung đưa khi rời (`components/ui/TiltCard.tsx`, tách chuyển động từ HoloCard của React Bits, không dùng lớp foil WebGL); tắt dưới `prefers-reduced-motion` và trên cảm ứng | Dev |
+| 28/10/2026 | F01.1 Nền panel phải của hero (desktop) đổi sang kim loại lỏng xoáy, tự viết theo ý tưởng Metallic Swirl (React Bits Pro cần license nên không cài bản gốc) | Dev |
+| 28/10/2026 | F01.2 Giới thiệu ngắn dùng nền `MetallicSwirl` (thêm prop `center` để đặt tâm xoáy) | Dev |
+| 28/10/2026 | F01.1–F01.3 Chuyển tiếp Hero → Giới thiệu → Concept nổi bật: bỏ đường kẻ `line` ở hai chỗ nối, nền xoáy tan dần về kem ở mép (ngoại lệ của quy ước "phân cách bằng viền 1px" ở mục 6) | Dev |

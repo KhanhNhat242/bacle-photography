@@ -46,6 +46,7 @@ import redAoDaiSmile from '@/public/images/library/843242288_122179310492985766_
 import churchVeil from '@/public/images/library/833313904_122177916572985766_8023779917759797400_n.jpg'
 import churchCelebration from '@/public/images/library/841398071_122179108592985766_4310454375037404420_n.jpg'
 import studioWhiteJacket from '@/public/images/library/825267522_122178234218985766_6282745370719680158_n.jpg'
+import contactBanner from '@/public/images/contact-banner.jpg'
 
 export type ImageAsset = {
   src: StaticImageData
@@ -99,4 +100,6 @@ export const photos = {
   churchVeil: { src: churchVeil, alt: 'Cô dâu voan ren ngồi cạnh chú rể trong nhà thờ', position: '50% 35%' },
   churchCelebration: { src: churchCelebration, alt: 'Khách mời chúc mừng cô dâu chú rể bước ra từ nhà thờ', position: '50% 55%' },
   studioWhiteJacket: { src: studioWhiteJacket, alt: 'Chú rể áo vest trắng cười bên cô dâu cầm hoa', position: '50% 25%' },
+  // ảnh ngang 3:2, dùng làm nền section Liên hệ (F01.7)
+  contactBanner: { src: contactBanner, alt: 'Cô dâu chú rể nắm tay bên lan can trong sảnh cổ điển có hàng cửa vòm', position: '50% 55%' },
 } satisfies Record<string, ImageAsset>

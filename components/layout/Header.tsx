@@ -168,7 +168,7 @@ export function Header() {
                       aria-current={active ? 'location' : undefined}
                       className={cn(
                         'group relative whitespace-nowrap py-2 text-[12px] font-medium uppercase tracking-[0.18em] transition-colors',
-                        active ? 'text-ink' : 'text-muted hover:text-ink',
+                        active ? 'text-ink' : 'text-muted-foreground hover:text-ink',
                       )}
                     >
                       {item.label}

@@ -1,4 +1,5 @@
 import { getImageProps } from 'next/image'
+import { Suspense } from 'react'
 
 import { ConceptFlexCarousel } from '@/components/concept/ConceptFlexCarousel'
 import { Section } from '@/components/ui/Section'
@@ -34,7 +35,10 @@ export function FeaturedConcepts() {
         description=""
       />
 
-      <ConceptFlexCarousel slides={slides} />
+      {/* Suspense: tiêu đề section (data-reveal) hydrate ngay, không chờ chunk WebGL của carousel */}
+      <Suspense fallback={null}>
+        <ConceptFlexCarousel slides={slides} />
+      </Suspense>
     </Section>
   )
 }

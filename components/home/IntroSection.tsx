@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
 import { MetallicSwirl } from '@/components/home/MetallicSwirl'
 import { ArrowRightIcon } from '@/components/ui/icons'
@@ -25,7 +26,11 @@ export function IntroSection() {
       aria-labelledby="intro-title"
       className="relative isolate overflow-hidden border-t-0!"
     >
-      <MetallicSwirl center={[-0.45, 0.05]} className="absolute inset-0 -z-10" />
+      {/* Suspense: phần còn lại của section hydrate ngay, không chờ chunk WebGL (ogl) tải xong –
+          nếu chờ, ScrollReveal kịp gắn is-revealed lên DOM chưa hydrate → lỗi hydration mismatch */}
+      <Suspense fallback={null}>
+        <MetallicSwirl center={[-0.45, 0.05]} className="absolute inset-0 -z-10" />
+      </Suspense>
       {/* Lớp kem để chữ nổi: mobile phủ đều (chữ nằm dưới ảnh), desktop đậm dần về cột chữ bên phải */}
       <div
         aria-hidden="true"

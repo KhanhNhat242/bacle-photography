@@ -10,21 +10,35 @@ export function ScrollReveal() {
   const pathname = usePathname()
 
   useEffect(() => {
-    const elements = document.querySelectorAll<HTMLElement>('[data-reveal]')
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-revealed')
-          } else if (entry.boundingClientRect.top > 0) {
-            entry.target.classList.remove('is-revealed')
+    let observer: IntersectionObserver | null = null
+
+    const start = () => {
+      observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-revealed')
+            } else if (entry.boundingClientRect.top > 0) {
+              entry.target.classList.remove('is-revealed')
+            }
           }
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
-    )
-    elements.forEach((element) => observer.observe(element))
-    return () => observer.disconnect()
+        },
+        { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
+      )
+      document.querySelectorAll<HTMLElement>('[data-reveal]').forEach((element) => observer?.observe(element))
+    }
+
+    // Layout hydrate trước trang: gắn class ngay thì phần trang còn chờ chunk JS (chưa hydrate) sẽ lệch
+    // className với HTML server → lỗi hydration mismatch. Đợi trang tải xong (load) rồi mới bắt đầu.
+    if (document.readyState === 'complete') {
+      start()
+    } else {
+      window.addEventListener('load', start, { once: true })
+    }
+    return () => {
+      window.removeEventListener('load', start)
+      observer?.disconnect()
+    }
   }, [pathname])
 
   return null

@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+
 import { BOOKING_FORM_ID } from '@/components/booking/bookingAnchor'
 import { BookingForm } from '@/components/booking/BookingForm'
 import { ContactBackdrop } from '@/components/home/ContactBackdrop'
@@ -77,7 +79,10 @@ export function ContactCta() {
               <p className="mt-2 mb-6 text-[14px] font-light text-muted-foreground">
                 Đây là yêu cầu tư vấn – BACLE sẽ gọi lại để xác nhận lịch chụp với hai bạn.
               </p>
-              <BookingForm conceptOptions={conceptOptions} packageOptions={packageOptions} />
+              {/* antd Form đọc Date.now() khi render – với cacheComponents phải nằm trong Suspense, nếu không build lỗi */}
+              <Suspense fallback={<div aria-hidden="true" className="min-h-[38rem]" />}>
+                <BookingForm conceptOptions={conceptOptions} packageOptions={packageOptions} />
+              </Suspense>
             </div>
           </div>
 

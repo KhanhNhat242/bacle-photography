@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro, Cormorant_Garamond, Great_Vibes, Geist } from "next/font/google";
 import "./globals.css";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { Suspense } from "react";
+import { AntdRegistry } from "@/components/layout/AntdRegistry";
 import { AntdProvider } from "@/components/layout/AntdProvider";
 import { photos } from "@/data/photos";
 import { site } from "@/data/site";
@@ -58,11 +57,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased", beVietnamPro.variable, cormorant.variable, greatVibes.variable, "font-sans", geist.variable)}
     >
       <body className="min-h-full flex flex-col bg-cream font-sans text-ink">
-        <Suspense fallback={null}>
-          <AntdRegistry>
-            <AntdProvider>{children}</AntdProvider>
-          </AntdRegistry>
-        </Suspense>
+        <AntdRegistry>
+          <AntdProvider>{children}</AntdProvider>
+        </AntdRegistry>
       </body>
     </html>
   );
